@@ -10,7 +10,7 @@ module.exports = {
       database: process.env.DEV_DB,
       user: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
-      host: process.env.DB_HOST,
+      // host: process.env.DB_HOST,
       port: process.env.DB_PORT,
     },
     pool: {
@@ -23,11 +23,13 @@ module.exports = {
   },
 
   staging: {
-    client: 'postgresql',
+    client: 'mysql2',
     connection: {
-      database: 'my_db',
-      user: 'username',
-      password: 'password',
+      database: process.env.DEV_DB,
+      user: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      host: process.env.DB_HOST,
+      port: process.env.DB_PORT,
     },
     pool: {
       min: 2,
@@ -39,11 +41,13 @@ module.exports = {
   },
 
   production: {
-    client: 'postgresql',
+    client: 'mysql2',
     connection: {
-      database: 'my_db',
-      user: 'username',
-      password: 'password',
+      database: process.env.DEV_DB,
+      user: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      host: process.env.DB_HOST,
+      port: process.env.DB_PORT,
     },
     pool: {
       min: 2,

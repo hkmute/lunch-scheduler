@@ -12,8 +12,10 @@ const knex = Knex(knexConfig[process.env.NODE_ENV || 'development']);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const testKnex = async () => console.log(await knex.select().from('test'));
-testKnex();
+app.get('/test', async (req, res) => {
+  const testKnex = async () => await knex.select().from('test');
+  res.json({ data: await testKnex() });
+});
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
