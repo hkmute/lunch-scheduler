@@ -6,7 +6,7 @@ import Home from "./src/screens/HomeScreen";
 import MainRoute from "./src/routes/MainRoute";
 
 export default function App() {
-  const Stack = createNativeStackNavigator();
+  const Stack = createNativeStackNavigator<RootStackParamList>();
 
   return (
     <>
@@ -17,7 +17,11 @@ export default function App() {
             component={Home}
             options={{ headerShown: false }}
           />
-          <Stack.Screen name="Main" component={MainRoute} />
+          <Stack.Screen
+            name="Main"
+            component={MainRoute}
+            options={{ headerShown: false }}
+          />
         </Stack.Navigator>
       </NavigationContainer>
       <StatusBar style="auto" />
