@@ -12,6 +12,7 @@
   "plugins": ["@typescript-eslint"],
   "rules": {
     "semi": "off",
-    "comma-dangle": "off"
+    "comma-dangle": "off",
+    "space-before-function-paren": "off"
   }
 }
