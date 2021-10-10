@@ -6,7 +6,10 @@
     "version": "0.1.9"
   },
   "servers": [
-    { "url": "http://localhost:8080/", "description": "Local development server" },
+    {
+      "url": "http://localhost:8080/",
+      "description": "Local development server"
+    },
     {
       "url": "http://staging-api.example.com",
       "description": "Optional server description, e.g. Internal staging server for testing"
@@ -47,5 +50,7 @@
         }
       }
     }
-  }
+  },
+  "components": {},
+  "tags": []
 }
