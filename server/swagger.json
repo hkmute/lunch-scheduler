@@ -15,9 +15,20 @@
       "description": "Optional server description, e.g. Internal staging server for testing"
     }
   ],
+  "tags": [
+    {
+      "name": "test",
+      "description": "test"
+    },
+    {
+      "name": "test2",
+      "description": "test2"
+    }
+  ],
   "paths": {
     "/options": {
       "get": {
+        "tags": ["test"],
         "summary": "Returns a list of options.",
         "description": "",
         "responses": {
@@ -46,11 +57,19 @@
                 }
               }
             }
+          },
+          "default": {
+            "$ref": "#components/responses/Error"
           }
         }
       }
     }
   },
-  "components": {},
-  "tags": []
+  "components": {
+    "responses": {
+      "Error": {
+        "description": "Unexpected error"
+      }
+    }
+  }
 }

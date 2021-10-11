@@ -17,8 +17,18 @@ const options: swaggerJSDoc.OAS3Options = {
         description: 'Optional server description, e.g. Internal staging server for testing',
       },
     ],
+    tags: [
+      {
+        name: 'test',
+        description: 'test',
+      },
+      {
+        name: 'test2',
+        description: 'test2',
+      },
+    ],
   },
-  apis: ['./routes.ts'],
+  apis: ['./docs/**.yaml'],
 };
 
 const swaggerSpec = swaggerJSDoc(options);
