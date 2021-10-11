@@ -22,4 +22,4 @@
                       name:
                         type: string
       default:
-        $ref: '#components/responses/Error'
+        $ref: '#components/responses/DefaultErrors'

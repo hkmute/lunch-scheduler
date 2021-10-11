@@ -1,6 +1,8 @@
 import swaggerJSDoc from 'swagger-jsdoc';
 import { writeFile } from 'fs/promises';
+import dotenv from 'dotenv';
 
+dotenv.config();
 const options: swaggerJSDoc.OAS3Options = {
   definition: {
     openapi: '3.0.0',
@@ -11,7 +13,7 @@ const options: swaggerJSDoc.OAS3Options = {
       version: '0.1.9',
     },
     servers: [
-      { url: 'http://localhost:8080/', description: 'Local development server' },
+      { url: `http://localhost:${process.env.SERVER_PORT}/`, description: 'Local development server' },
       {
         url: 'http://staging-api.example.com',
         description: 'Optional server description, e.g. Internal staging server for testing',

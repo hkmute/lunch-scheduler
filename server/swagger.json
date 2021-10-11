@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost:8080/",
+      "url": "http://localhost:3000/",
       "description": "Local development server"
     },
     {
@@ -59,17 +59,25 @@
             }
           },
           "default": {
-            "$ref": "#components/responses/Error"
+            "$ref": "#components/responses/DefaultErrors"
           }
         }
       }
     }
   },
   "components": {
+    "schemas": {},
+    "parameters": {},
+    "securitySchemes": {},
+    "requestBodies": {},
     "responses": {
-      "Error": {
-        "description": "Unexpected error"
+      "DefaultErrors": {
+        "description": "Unexpected error."
       }
-    }
+    },
+    "headers": {},
+    "examples": {},
+    "links": {},
+    "callbacks": {}
   }
 }
