@@ -1,30 +1,5 @@
-import { Service, ServiceFunction } from '../services/service';
+import { ServiceFunction } from '../services/service';
 import { Request, Response } from 'express';
-
-export class Controller {
-  constructor(private service: Service) {}
-
-  getOptions = async (req: Request, res: Response) => {
-    try {
-      const options = await this.service.getOptions();
-      res.json({ options });
-    } catch (error) {
-      console.error(error.message);
-      res.status(500).json({ message: 'interval server error' });
-    }
-  };
-
-  getHistoryByCode = async (req: Request, res: Response) => {
-    try {
-      const code = req.params.code;
-      const history = await this.service.getHistoryByCode(code);
-      res.json({ history });
-    } catch (error) {
-      console.error(error.message);
-      res.status(500).json({ message: 'interval server error' });
-    }
-  };
-}
 
 export function ControllerFunction(service: ReturnType<typeof ServiceFunction>) {
   return Object.freeze({
@@ -65,6 +40,17 @@ export function ControllerFunction(service: ReturnType<typeof ServiceFunction>) 
         const code = req.params.code;
         const optionListDetails = await service.getOptionListDetailsByCode(code);
         res.json({ data: optionListDetails });
+      } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ message: 'interval server error' });
+      }
+    },
+
+    getTodayOptionsByCode: async (req: Request, res: Response) => {
+      try {
+        const code = req.params.code;
+        const todayOptions = await service.getTodayOptionsByCode(code);
+        res.json({ data: todayOptions });
       } catch (error) {
         console.error(error.message);
         res.status(500).json({ message: 'interval server error' });
