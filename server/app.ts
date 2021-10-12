@@ -4,7 +4,7 @@ import swaggerUi from 'swagger-ui-express';
 import path from 'path';
 import cors from 'cors';
 import swaggerSpec from './utils/swagger';
-import { routes } from './routes/routes';
+import { routes } from './routes';
 
 dotenv.config();
 const app = express();

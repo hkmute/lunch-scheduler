@@ -9,3 +9,20 @@ export interface History {
   option_id: number;
   code_id: number;
 }
+
+export interface OptionList {
+  id: number;
+  name: string;
+}
+
+export interface Code {
+  id: number;
+  code: string;
+  option_list_id: number;
+}
+
+export interface OptionInList {
+  id: number;
+  option_list_id: number;
+  option_id: number;
+}
