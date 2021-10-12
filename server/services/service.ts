@@ -39,31 +39,23 @@ export function ServiceFunction(knex: Knex) {
     },
 
     getOptionListDetailsByCode: async (code: string) => {
-      return await knex<OptionList[]>('option_list')
+      const res = await knex<OptionList[]>('option_list')
         .select()
         .where('code', code)
         .join<Code>('code', 'code.option_list_id', 'option_list.id')
         .join<OptionInList>('option_in_list', 'option_in_list.option_list_id', 'option_list.id')
         .join<Options>('options', 'options.id', 'option_in_list.option_id')
-        .join(
-          knex
-            .select(knex.ref('id').withSchema('options'), knex.ref('name').withSchema('options'))
-            .from('options')
-            .as('details'),
-          'details.id',
-          'options.id'
+        .select(
+          knex.ref('id').withSchema('option_list'),
+          knex.ref('name').withSchema('option_list'),
+          knex.raw("CONCAT('[',GROUP_CONCAT( JSON_OBJECT('optionId', ?, 'optionName', ?)),']') AS 'details'", [
+            knex.ref('id').withSchema('options'),
+            knex.ref('name').withSchema('options'),
+          ])
         )
-        .select
-        // knex.ref('id').withSchema('option_list'),
-        // knex.ref('name').withSchema('option_list'),
-        // knex.select().from('details')
-        // knex.raw("GROUP_CONCAT(CONCAT('{', ?, ?, '}')) AS 'details'", [
-        //   knex.ref('id').withSchema('options'),
-        //   knex.ref('name').withSchema('options'),
-        // ]
-        // )
-        ();
-      // .groupBy('id');
+        .groupBy('id');
+      //@ts-ignore
+      return res.map((row) => ({ ...row, details: JSON.parse(row.details) }));
     },
   });
 }
