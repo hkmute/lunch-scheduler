@@ -5,6 +5,7 @@ import path from 'path';
 import cors from 'cors';
 import swaggerSpec from './utils/swagger';
 import { routes } from './routes';
+import { scheduleTask } from './utils/cron';
 
 dotenv.config();
 const app = express();
@@ -26,6 +27,8 @@ app.use('/swagger', (req, res) => res.sendFile(path.join(__dirname, '/swagger.js
 app.get('/', (req, res) => {
   res.send('Hello World!');
 });
+
+scheduleTask();
 
 app.listen(PORT, () => {
   console.log(`Server listening at http://localhost:${PORT}`);

@@ -2,7 +2,7 @@ import { format } from 'date-fns';
 import { Knex } from 'knex';
 import { Options, History, OptionList, Code, OptionInList, Vote } from './model';
 
-export function ServiceFunction(knex: Knex) {
+export function Service(knex: Knex) {
   return Object.freeze({
     getOptions: async () => {
       return await knex<Options>('options').select('id', 'name');
@@ -55,12 +55,20 @@ export function ServiceFunction(knex: Knex) {
         .where('code', code)
         .join<Vote>('vote', 'vote.code_id', 'code.id')
         .join<Options>('options', 'options.id', 'vote.option_id')
-        .select('vote.id', 'vote.date', 'vote.user', 'options.id as optionId', 'options.name')
+        .select(
+          knex.ref('id').withSchema('vote'),
+          knex.ref('date').withSchema('vote'),
+          knex.ref('user').withSchema('vote'),
+          knex.ref('id').withSchema('options').as('optionId'),
+          knex.ref('name').withSchema('options')
+        )
         .whereRaw('vote.date = CURDATE()')
         .where('vote.user', user);
     },
 
     postTodayVote: async (code: string, user: string, optionId: number) => {
+      // TODO: check option in today option list
+
       const codeId = (await knex<Code>('code').select('id').where('code', code).first())?.id;
       if (!codeId) {
         return { message: 'Invalid code' };

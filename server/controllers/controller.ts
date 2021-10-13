@@ -1,7 +1,7 @@
-import { ServiceFunction } from '../services/service';
+import { Service } from '../services/service';
 import { Request, Response } from 'express';
 
-export function ControllerFunction(service: ReturnType<typeof ServiceFunction>) {
+export function Controller(service: ReturnType<typeof Service>) {
   return Object.freeze({
     getOptions: async (req: Request, res: Response) => {
       try {

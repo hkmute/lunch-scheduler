@@ -1,12 +1,12 @@
 import express from 'express';
 import Knex from 'knex';
-import { ControllerFunction } from './controllers/controller';
+import { Controller } from './controllers/controller';
 import * as knexConfig from './knexfile';
-import { ServiceFunction } from './services/service';
+import { Service } from './services/service';
 
-const knex = Knex(knexConfig[process.env.NODE_ENV || 'development']);
-const service = ServiceFunction(knex);
-const controller = ControllerFunction(service);
+export const knex = Knex(knexConfig[process.env.NODE_ENV || 'development']);
+const service = Service(knex);
+const controller = Controller(service);
 
 export const routes = express.Router();
 

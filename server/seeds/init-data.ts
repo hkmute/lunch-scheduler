@@ -25,7 +25,7 @@ export async function seed(knex: Knex): Promise<void> {
     await knex('options').insert(options);
     const optionsId = await knex('options').select('id');
 
-    await knex('option_list').insert([{ name: 'example list' }]);
+    await knex('option_list').insert([{ name: 'example list' }, { name: 'example list2' }]);
     const listId = await knex('option_list').select('id').first();
 
     await knex('option_in_list').insert(
@@ -35,7 +35,10 @@ export async function seed(knex: Knex): Promise<void> {
       }))
     );
 
-    await knex('code').insert({ code: 'example', option_list_id: listId.id });
+    await knex('code').insert([
+      { code: 'example', option_list_id: listId.id },
+      { code: 'example2', option_list_id: listId.id },
+    ]);
     const codeId = await knex('code').select().first();
 
     const today = new Date();
