@@ -3,6 +3,12 @@ components:
   schemas:
   # Reusable path, query, header and cookie parameters
   parameters:
+    CODE:
+      name: code
+      in: path
+      required: true
+      schema:
+        type: string
   # Security scheme definitions (see Authentication)
   securitySchemes:
   # Reusable request bodies

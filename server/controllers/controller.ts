@@ -74,10 +74,13 @@ export function Controller(service: ReturnType<typeof Service>) {
         const code = req.params.code;
         const { user, optionId } = req.body;
         const votes = await service.postTodayVote(code, user, optionId);
-        res.json({ data: votes });
+        if (Array.isArray(votes)) {
+          return res.json({ data: votes });
+        }
+        return res.status(votes.code).json({ message: votes.message });
       } catch (error) {
         console.error(error.message);
-        res.status(500).json({ message: 'interval server error' });
+        return res.status(500).json({ message: 'interval server error' });
       }
     },
   });

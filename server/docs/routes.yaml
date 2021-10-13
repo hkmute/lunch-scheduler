@@ -12,7 +12,7 @@
             schema:
               type: object
               properties:
-                options:
+                data:
                   type: array
                   items:
                     type: object
@@ -21,5 +21,200 @@
                         type: integer
                       name:
                         type: string
+      default:
+        $ref: '#components/responses/DefaultErrors'
+
+/history/{code}:
+  get:
+    tags:
+      - ''
+    summary: ''
+    description: ''
+    parameters:
+      - $ref: '#components/parameters/CODE'
+    responses:
+      200:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      date:
+                        type: string
+                        format: datetime
+                      name:
+                        type: string
+      default:
+        $ref: '#components/responses/DefaultErrors'
+/option-list/{code}:
+  get:
+    tags:
+      - ''
+    summary: ''
+    description: ''
+    parameters:
+      - $ref: '#components/parameters/CODE'
+    responses:
+      200:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+      default:
+        $ref: '#components/responses/DefaultErrors'
+/option-list/{code}/details:
+  get:
+    tags:
+      - ''
+    summary: ''
+    description: ''
+    parameters:
+      - $ref: '#components/parameters/CODE'
+    responses:
+      200:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      details:
+                        type: object
+                        properties:
+                          optionId:
+                            type: integer
+                          optionName:
+                            type: string
+      default:
+        $ref: '#components/responses/DefaultErrors'
+/today-options/{code}:
+  get:
+    tags:
+      - ''
+    summary: ''
+    description: ''
+    parameters:
+      - $ref: '#components/parameters/CODE'
+    responses:
+      200:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      date:
+                        type: string
+                        format: datetime
+                      name:
+                        type: string
+      default:
+        $ref: '#components/responses/DefaultErrors'
+/votes/{code}:
+  get:
+    tags:
+      - ''
+    summary: ''
+    description: ''
+    parameters:
+      - $ref: '#components/parameters/CODE'
+      - name: user
+        in: query
+        schema:
+          type: string
+    responses:
+      200:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      date:
+                        type: string
+                        format: datetime
+                      name:
+                        type: string
+                      user:
+                        type: string
+                      optionId:
+                        type: integer
+      default:
+        $ref: '#components/responses/DefaultErrors'
+  post:
+    tags:
+      - ''
+    summary: ''
+    description: ''
+    parameters:
+      - $ref: '#components/parameters/CODE'
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              user:
+                type: string
+              optionId:
+                type: number
+    responses:
+      200:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    type: integer
+      403:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+
       default:
         $ref: '#components/responses/DefaultErrors'

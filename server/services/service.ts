@@ -12,7 +12,11 @@ export function Service(knex: Knex) {
       return await knex<History>('history')
         .join<Code>('code', 'history.code_id', 'code.id')
         .join<Options>('options', 'history.option_id', 'options.id')
-        .select('history.id', 'history.date', 'options.name')
+        .select(
+          knex.ref('id').withSchema('history'),
+          knex.ref('date').withSchema('history'),
+          knex.ref('name').withSchema('options')
+        )
         .where('code.code', code);
     },
 
@@ -71,7 +75,7 @@ export function Service(knex: Knex) {
 
       const codeId = (await knex<Code>('code').select('id').where('code', code).first())?.id;
       if (!codeId) {
-        return { message: 'Invalid code' };
+        return { code: 403, message: 'Invalid code' };
       }
 
       const duplicated = (
@@ -81,14 +85,14 @@ export function Service(knex: Knex) {
           .first()
       )?.count;
       if (duplicated) {
-        return { message: 'You have voted today already' };
+        return { code: 403, message: 'You have voted today already' };
       }
 
       const validateOptionId = (
         await knex<Options>('options').count('*', { as: 'count' }).where('id', optionId).first()
       )?.count;
       if (!validateOptionId) {
-        return { message: 'Please check your option.' };
+        return { code: 403, message: 'Please check your option.' };
       }
 
       return await knex<Vote>('vote').insert({
