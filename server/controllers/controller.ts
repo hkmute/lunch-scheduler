@@ -56,5 +56,29 @@ export function ControllerFunction(service: ReturnType<typeof ServiceFunction>) 
         res.status(500).json({ message: 'interval server error' });
       }
     },
+
+    getTodayVoteByCode: async (req: Request, res: Response) => {
+      try {
+        const code = req.params.code;
+        const { user } = req.query;
+        const votes = await service.getTodayVoteByCode(code, typeof user === 'string' ? user : '');
+        res.json({ data: votes });
+      } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ message: 'interval server error' });
+      }
+    },
+
+    postTodayVote: async (req: Request, res: Response) => {
+      try {
+        const code = req.params.code;
+        const { user, optionId } = req.body;
+        const votes = await service.postTodayVote(code, user, optionId);
+        res.json({ data: votes });
+      } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ message: 'interval server error' });
+      }
+    },
   });
 }

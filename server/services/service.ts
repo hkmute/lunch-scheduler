@@ -1,5 +1,6 @@
+import { format } from 'date-fns';
 import { Knex } from 'knex';
-import { Options, History, OptionList, Code, OptionInList } from './model';
+import { Options, History, OptionList, Code, OptionInList, Vote } from './model';
 
 export function ServiceFunction(knex: Knex) {
   return Object.freeze({
@@ -47,6 +48,47 @@ export function ServiceFunction(knex: Knex) {
         .join<Options>('options', 'options.id', 'today_options.option_id')
         .select('today_options.id', 'today_options.date', 'options.id', 'options.name')
         .whereRaw('today_options.date = CURDATE()');
+    },
+
+    getTodayVoteByCode: async (code: string, user: string) => {
+      return await knex<Code>('code')
+        .where('code', code)
+        .join<Vote>('vote', 'vote.code_id', 'code.id')
+        .join<Options>('options', 'options.id', 'vote.option_id')
+        .select('vote.id', 'vote.date', 'vote.user', 'options.id as optionId', 'options.name')
+        .whereRaw('vote.date = CURDATE()')
+        .where('vote.user', user);
+    },
+
+    postTodayVote: async (code: string, user: string, optionId: number) => {
+      const codeId = (await knex<Code>('code').select('id').where('code', code).first())?.id;
+      if (!codeId) {
+        return { message: 'Invalid code' };
+      }
+
+      const duplicated = (
+        await knex<Vote>('vote')
+          .count('*', { as: 'count' })
+          .where({ user, code_id: codeId, date: format(new Date(), 'yyyy-MM-dd') })
+          .first()
+      )?.count;
+      if (duplicated) {
+        return { message: 'You have voted today already' };
+      }
+
+      const validateOptionId = (
+        await knex<Options>('options').count('*', { as: 'count' }).where('id', optionId).first()
+      )?.count;
+      if (!validateOptionId) {
+        return { message: 'Please check your option.' };
+      }
+
+      return await knex<Vote>('vote').insert({
+        date: format(new Date(), 'yyyy-MM-dd'),
+        user,
+        option_id: optionId,
+        code_id: codeId,
+      });
     },
   });
 }

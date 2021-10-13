@@ -26,3 +26,11 @@ export interface OptionInList {
   option_list_id: number;
   option_id: number;
 }
+
+export interface Vote {
+  id: number;
+  date: string;
+  user: string;
+  option_id: number;
+  code_id: number;
+}

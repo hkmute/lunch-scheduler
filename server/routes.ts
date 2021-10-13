@@ -15,3 +15,5 @@ routes.get('/history/:code', controller.getHistoryByCode);
 routes.get('/option-list/:code', controller.getOptionListByCode);
 routes.get('/option-list/:code/details', controller.getOptionListDetailsByCode);
 routes.get('/today-options/:code', controller.getTodayOptionsByCode);
+routes.get('/votes/:code', controller.getTodayVoteByCode);
+routes.post('/votes/:code', controller.postTodayVote);
