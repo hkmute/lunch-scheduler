@@ -17,7 +17,8 @@ export function Service(knex: Knex) {
           knex.ref('date').withSchema('history'),
           knex.ref('name').withSchema('options')
         )
-        .where('code.code', code);
+        .where('code.code', code)
+        .orderBy('date', 'desc');
     },
 
     getOptionListByCode: async (code: string) => {

@@ -1,30 +1,48 @@
-import React from "react";
+import React, { useCallback, useContext, useState } from "react";
 import { SafeAreaView, FlatList, View, Text } from "react-native";
 import styles from "../styles/styles";
+import { API_BASE_URL } from "@env";
+import { format, parseISO } from "date-fns";
+import { RoomCode } from "../../AppContext";
+import { useFocusEffect } from "@react-navigation/native";
 
-const DATA = [
-  {
-    id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-    date: new Date(),
-    title: "First Item",
-  },
-  {
-    id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-    date: new Date(),
-    title: "Second Item",
-  },
-  {
-    id: "58694a0f-3da1-471f-bd96-145571e29d72",
-    date: new Date(),
-    title: "Third Item",
-  },
-];
+interface HistoryItem {
+  id: 0;
+  date: "string";
+  name: "string";
+}
 
 export default function HistoryScreen() {
+  const code = useContext(RoomCode);
+  const [historyData, setHistoryData] = useState<HistoryItem[]>([]);
+
+  useFocusEffect(
+    useCallback(() => {
+      let isActive = true;
+      fetchHistory().then((result) => {
+        if (isActive) {
+          setHistoryData(result.data);
+        }
+      });
+      return () => {
+        isActive = false;
+      };
+    }, [])
+  );
+
+  const fetchHistory = async () => {
+    try {
+      const res = await fetch(`${API_BASE_URL}/history/${code}`);
+      return await res.json();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
-        data={DATA}
+        data={historyData}
         renderItem={({ item }) => (
           <View
             style={{
@@ -34,12 +52,12 @@ export default function HistoryScreen() {
             }}
           >
             <Text style={{ flex: 1, textAlign: "center" }}>
-              {item.date.toLocaleDateString()}
+              {format(parseISO(item.date), "yyyy-MM-dd")}
             </Text>
-            <Text style={{ flex: 2, textAlign: "center" }}>{item.title}</Text>
+            <Text style={{ flex: 2, textAlign: "center" }}>{item.name}</Text>
           </View>
         )}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => String(item.id)}
         ItemSeparatorComponent={() => (
           <View
             style={{

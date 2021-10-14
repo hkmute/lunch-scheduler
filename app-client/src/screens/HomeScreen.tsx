@@ -3,7 +3,7 @@ import {
   CompositeNavigationProp,
 } from "@react-navigation/native";
 import React, { useState } from "react";
-import { Button, TextInput } from "react-native";
+import { Button, TextInput, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
@@ -16,9 +16,15 @@ type HomeScreenNavigationProp = CompositeNavigationProp<
 export default function Home() {
   const navigation = useNavigation<HomeScreenNavigationProp>();
   const [code, setCode] = useState("");
+  const [error, setError] = useState(false);
 
   const onSubmit = () => {
-    navigation.navigate("Main", { code });
+    if (code) {
+      setError(false);
+      navigation.navigate("Main", { code });
+    } else {
+      setError(true);
+    }
   };
 
   return (
@@ -34,9 +40,11 @@ export default function Home() {
           margin: 12,
           borderWidth: 1,
           padding: 10,
+          borderColor: error ? "red" : undefined,
         }}
       />
       <Button title="To Content" onPress={onSubmit} />
+      {error && <Text style={{ color: "red" }}>Please enter a code.</Text>}
     </SafeAreaView>
   );
 }
