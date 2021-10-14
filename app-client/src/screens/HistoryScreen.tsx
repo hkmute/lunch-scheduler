@@ -1,5 +1,11 @@
 import React, { useCallback, useContext, useState } from "react";
-import { SafeAreaView, FlatList, View, Text } from "react-native";
+import {
+  SafeAreaView,
+  FlatList,
+  View,
+  Text,
+  RefreshControl,
+} from "react-native";
 import styles from "../styles/styles";
 import { API_BASE_URL } from "@env";
 import { format, parseISO } from "date-fns";
@@ -15,6 +21,7 @@ interface HistoryItem {
 export default function HistoryScreen() {
   const code = useContext(RoomCode);
   const [historyData, setHistoryData] = useState<HistoryItem[]>([]);
+  const [refreshing, setRefreshing] = useState(false);
 
   useFocusEffect(
     useCallback(() => {
@@ -29,6 +36,14 @@ export default function HistoryScreen() {
       };
     }, [])
   );
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    fetchHistory().then((result) => {
+      setHistoryData(result.data);
+      setRefreshing(false);
+    });
+  }, []);
 
   const fetchHistory = async () => {
     try {
@@ -66,6 +81,9 @@ export default function HistoryScreen() {
             }}
           />
         )}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
       />
     </SafeAreaView>
   );

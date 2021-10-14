@@ -23,6 +23,7 @@ export async function up(knex: Knex): Promise<void> {
   });
 
   await knex.schema.createTable('code', (table) => {
+    table.collate('utf8mb4_0900_as_cs');
     table.increments();
     table.string('code').notNullable();
     table.integer('option_list_id').unsigned().notNullable();
