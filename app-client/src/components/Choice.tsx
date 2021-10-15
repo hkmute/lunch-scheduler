@@ -80,10 +80,10 @@ export default function Choice(props: { code: string }) {
   return (
     <View style={{ ...styles.container, justifyContent: "center", margin: 16 }}>
       {vote ? (
-        <Text>你今天的選擇是 {vote}</Text>
+        <Text style={{ textAlign: "center" }}>你今天的選擇是 {vote}</Text>
       ) : (
         options.map((option) => (
-          <View style={{ paddingVertical: 16 }}>
+          <View key={option.id} style={{ paddingVertical: 16 }}>
             <Button title={option.name} onPress={handlePress(option.id)} />
           </View>
         ))

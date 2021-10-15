@@ -1,4 +1,4 @@
-import { add } from 'date-fns';
+import { sub } from 'date-fns';
 import { Knex } from 'knex';
 
 export async function seed(knex: Knex): Promise<void> {
@@ -44,7 +44,7 @@ export async function seed(knex: Knex): Promise<void> {
     const today = new Date();
     await knex('history').insert(
       [...new Array(50)].map((ele, index) => ({
-        date: add(today, { days: index }),
+        date: sub(today, { days: index + 1 }),
         option_id: optionsId[Math.floor(optionsId.length * Math.random())].id,
         code_id: codeId.id,
       }))

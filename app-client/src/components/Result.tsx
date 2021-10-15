@@ -11,7 +11,7 @@ export default function Result(props: { result: string }) {
         alignItems: "center",
       }}
     >
-      <Text style={{ fontSize: 32 }}>{props.result}</Text>
+      <Text style={{ fontSize: 32 }}>結果：{props.result}</Text>
     </View>
   );
 }
