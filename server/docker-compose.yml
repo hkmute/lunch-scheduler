@@ -1,4 +1,12 @@
 services:
+  server:
+    depends_on:
+      - db
+    build: .
+    restart: always
+    ports:
+      - 8080:8080
+
   db:
     image: mysql
     restart: always
@@ -7,8 +15,6 @@ services:
       MYSQL_DATABASE: ${DEV_DB}
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASSWORD}
-    ports:
-      - 3306:3306
     volumes:
       - mysqldata:/var/lib/mysql
 

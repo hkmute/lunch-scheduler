@@ -12,4 +12,5 @@ COPY . .
 
 EXPOSE 8080
 
-CMD node .
+CMD node . &&\
+  yarn knex migrate:latest
