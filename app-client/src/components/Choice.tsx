@@ -1,7 +1,8 @@
 import { API_BASE_URL } from "@env";
 import { useFocusEffect } from "@react-navigation/native";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import { View, Button, Text } from "react-native";
+import { User } from "../../AppContext";
 import styles from "../styles/styles";
 
 interface Option {
@@ -13,12 +14,13 @@ interface Option {
 export default function Choice(props: { code: string }) {
   const [options, setOptions] = useState<Option[]>([]);
   const [vote, setVote] = useState();
+  const user = useContext(User);
 
   useFocusEffect(
     useCallback(() => {
       let isActive = true;
       fetchTodayVote().then((vote) => {
-        if (vote.data.length) {
+        if (vote?.data.length) {
           if (isActive) {
             setVote(vote.data[0].name);
           }
@@ -48,7 +50,7 @@ export default function Choice(props: { code: string }) {
   const fetchTodayVote = async () => {
     try {
       const res = await fetch(
-        `${API_BASE_URL}/votes/${props.code}?user=string`
+        `${API_BASE_URL}/votes/${props.code}?user=${user}`
       );
       return await res.json();
     } catch (err) {
@@ -64,7 +66,7 @@ export default function Choice(props: { code: string }) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          user: "string",
+          user,
           optionId: id,
         }),
       });

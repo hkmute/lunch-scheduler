@@ -15,7 +15,7 @@ export default function TodayScreen() {
       let isActive = true;
       fetchTodayResult().then((result) => {
         if (isActive) {
-          setResult(result.data?.name ?? null);
+          setResult(result?.data?.name ?? null);
         }
         return;
       });
