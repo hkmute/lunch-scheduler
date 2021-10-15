@@ -110,6 +110,50 @@
         }
       }
     },
+    "/history/{code}/today": {
+      "get": {
+        "tags": [""],
+        "summary": "",
+        "description": "",
+        "parameters": [
+          {
+            "$ref": "#components/parameters/CODE"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "nullable": true,
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        },
+                        "date": {
+                          "type": "string",
+                          "format": "datetime"
+                        },
+                        "name": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#components/responses/DefaultErrors"
+          }
+        }
+      }
+    },
     "/option-list/{code}": {
       "get": {
         "tags": [""],
