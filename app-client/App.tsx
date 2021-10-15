@@ -44,7 +44,6 @@ export default function App() {
   return (
     <>
       <User.Provider value={user}>
-        <Text>UserId: {user}</Text>
         {!!user && (
           <NavigationContainer>
             <Stack.Navigator>
@@ -61,6 +60,7 @@ export default function App() {
             </Stack.Navigator>
           </NavigationContainer>
         )}
+        <Text>UserId: {user}</Text>
         <StatusBar style="auto" />
       </User.Provider>
     </>
