@@ -23,8 +23,8 @@ export function InternalController(service: ReturnType<typeof InternalService>) 
           }[]
         >((acc, code) => {
           const optionIds = JSON.parse(code.optionIds);
-          const randomIndexs = generateRandomNumbers(3, optionIds.length - 1);
-          randomIndexs.forEach((index) =>
+          const randomIndexes = generateRandomNumbers(3, optionIds.length - 1);
+          randomIndexes.forEach((index) =>
             acc.push({
               codeId: code.codeId,
               optionId: optionIds[index],

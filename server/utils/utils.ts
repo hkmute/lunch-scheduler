@@ -6,7 +6,7 @@ export const generateRandomNumbers = (quantity: number, max: number, min = 0) =>
   const result: number[] = [];
   while (result.length < quantity) {
     const randomNumber = generateRandomNumber(max, min);
-    if (result.includes(randomNumber)) {
+    if (!result.includes(randomNumber)) {
       result.push(randomNumber);
     }
   }
