@@ -1,4 +1,5 @@
 import { InternalService } from '../services/internalService';
+import { generateRandomNumbers } from '../utils/utils';
 
 export function InternalController(service: ReturnType<typeof InternalService>) {
   return Object.freeze({
@@ -14,15 +15,23 @@ export function InternalController(service: ReturnType<typeof InternalService>) 
 
     generateOptions: async () => {
       try {
-        const options = await service.getCodeIdWithOptionIds();
-        const todayOptions = options.map((option) => {
-          const optionIds = JSON.parse(option.optionIds);
-          const randomIndex = Math.floor(Math.random() * optionIds.length);
-          return {
-            codeId: option.codeId,
-            optionId: optionIds[randomIndex],
-          };
-        });
+        const codesWithOptions = await service.getCodeIdWithOptionIds();
+        const todayOptions = codesWithOptions.reduce<
+          {
+            codeId: number;
+            optionId: any;
+          }[]
+        >((acc, code) => {
+          const optionIds = JSON.parse(code.optionIds);
+          const randomIndexs = generateRandomNumbers(3, optionIds.length - 1);
+          randomIndexs.forEach((index) =>
+            acc.push({
+              codeId: code.codeId,
+              optionId: optionIds[index],
+            })
+          );
+          return acc;
+        }, []);
         await service.insertTodayOptions(todayOptions);
         return;
       } catch (error) {
