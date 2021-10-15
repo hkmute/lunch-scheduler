@@ -103,5 +103,19 @@ export function Service(knex: Knex) {
         code_id: codeId,
       });
     },
+
+    getTodayResultByCode: async (code: string) => {
+      return await knex<History>('history')
+        .join<Code>('code', 'history.code_id', 'code.id')
+        .join<Options>('options', 'history.option_id', 'options.id')
+        .select(
+          knex.ref('id').withSchema('history'),
+          knex.ref('date').withSchema('history'),
+          knex.ref('name').withSchema('options')
+        )
+        .where('code.code', code)
+        .whereRaw('history.date = CURDATE()')
+        .first();
+    },
   });
 }

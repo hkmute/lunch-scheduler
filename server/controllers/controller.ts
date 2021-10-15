@@ -83,5 +83,16 @@ export function Controller(service: ReturnType<typeof Service>) {
         return res.status(500).json({ message: 'interval server error' });
       }
     },
+
+    getTodayResultByCode: async (req: Request, res: Response) => {
+      try {
+        const code = req.params.code;
+        const result = await service.getTodayResultByCode(code);
+        res.json({ data: result ?? null });
+      } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ message: 'interval server error' });
+      }
+    },
   });
 }

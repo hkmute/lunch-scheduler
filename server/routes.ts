@@ -12,6 +12,7 @@ export const routes = express.Router();
 
 routes.get('/options', controller.getOptions);
 routes.get('/history/:code', controller.getHistoryByCode);
+routes.get('/history/:code/today', controller.getTodayResultByCode);
 routes.get('/option-list/:code', controller.getOptionListByCode);
 routes.get('/option-list/:code/details', controller.getOptionListDetailsByCode);
 routes.get('/today-options/:code', controller.getTodayOptionsByCode);
