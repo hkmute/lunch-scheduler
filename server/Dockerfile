@@ -10,7 +10,8 @@ RUN yarn install --production
 
 COPY . .
 
+RUN yarn knex migrate:latest
+
 EXPOSE 8080
 
-CMD node . &&\
-  yarn knex migrate:latest
+CMD node .
