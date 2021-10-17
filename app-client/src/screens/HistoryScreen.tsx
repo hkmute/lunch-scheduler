@@ -5,6 +5,7 @@ import {
   View,
   Text,
   RefreshControl,
+  ActivityIndicator,
 } from "react-native";
 import styles from "../styles/styles";
 import { API_BASE_URL } from "@env";
@@ -22,6 +23,7 @@ export default function HistoryScreen() {
   const code = useContext(RoomCode);
   const [historyData, setHistoryData] = useState<HistoryItem[]>([]);
   const [refreshing, setRefreshing] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useFocusEffect(
     useCallback(() => {
@@ -29,6 +31,9 @@ export default function HistoryScreen() {
       fetchHistory().then((result) => {
         if (isActive) {
           setHistoryData(result.data);
+          if (loading) {
+            setLoading(false);
+          }
         }
       });
       return () => {
@@ -55,36 +60,42 @@ export default function HistoryScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <FlatList
-        data={historyData}
-        renderItem={({ item }) => (
-          <View
-            style={{
-              paddingHorizontal: 8,
-              paddingVertical: 16,
-              flexDirection: "row",
-            }}
-          >
-            <Text style={{ flex: 1, textAlign: "center" }}>
-              {format(parseISO(item.date), "yyyy-MM-dd")}
-            </Text>
-            <Text style={{ flex: 2, textAlign: "center" }}>{item.name}</Text>
-          </View>
-        )}
-        keyExtractor={(item) => String(item.id)}
-        ItemSeparatorComponent={() => (
-          <View
-            style={{
-              height: 1,
-              backgroundColor: "#CED0CE",
-            }}
-          />
-        )}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-      />
+    <SafeAreaView style={{ ...styles.container, justifyContent: "center" }}>
+      {loading ? (
+        <ActivityIndicator />
+      ) : historyData.length ? (
+        <FlatList
+          data={historyData}
+          renderItem={({ item }) => (
+            <View
+              style={{
+                paddingHorizontal: 8,
+                paddingVertical: 16,
+                flexDirection: "row",
+              }}
+            >
+              <Text style={{ flex: 1, textAlign: "center" }}>
+                {format(parseISO(item.date), "yyyy-MM-dd")}
+              </Text>
+              <Text style={{ flex: 2, textAlign: "center" }}>{item.name}</Text>
+            </View>
+          )}
+          keyExtractor={(item) => String(item.id)}
+          ItemSeparatorComponent={() => (
+            <View
+              style={{
+                height: 1,
+                backgroundColor: "#CED0CE",
+              }}
+            />
+          )}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        />
+      ) : (
+        <Text style={{ textAlign: "center" }}>未有歷史記錄</Text>
+      )}
     </SafeAreaView>
   );
 }

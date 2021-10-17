@@ -3,7 +3,7 @@ import {
   CompositeNavigationProp,
 } from "@react-navigation/native";
 import React, { useState } from "react";
-import { Button, TextInput, Text } from "react-native";
+import { Button, TextInput, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
@@ -31,6 +31,7 @@ export default function Home() {
     <SafeAreaView
       style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
     >
+      <Text style={{ fontSize: 20, width: "50%" }}>輸入編號：</Text>
       <TextInput
         onChangeText={setCode}
         value={code}
@@ -43,8 +44,9 @@ export default function Home() {
           borderColor: error ? "red" : undefined,
         }}
       />
-      <Button title="To Content" onPress={onSubmit} />
-      {error && <Text style={{ color: "red" }}>Please enter a code.</Text>}
+      <View style={{ width: "30%" }}>
+        <Button title="進入" onPress={onSubmit} />
+      </View>
     </SafeAreaView>
   );
 }

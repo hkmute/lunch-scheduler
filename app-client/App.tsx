@@ -8,7 +8,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import "react-native-get-random-values";
 import { nanoid } from "nanoid";
 import { User } from "./AppContext";
-import { Text } from "react-native";
+import { ActivityIndicator, Text } from "react-native";
 
 export default function App() {
   const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -44,7 +44,7 @@ export default function App() {
   return (
     <>
       <User.Provider value={user}>
-        {!!user && (
+        {user ? (
           <NavigationContainer>
             <Stack.Navigator>
               <Stack.Screen
@@ -59,8 +59,10 @@ export default function App() {
               />
             </Stack.Navigator>
           </NavigationContainer>
+        ) : (
+          <ActivityIndicator />
         )}
-        <Text>UserId: {user}</Text>
+        <Text style={{ paddingLeft: 8 }}>{user}</Text>
         <StatusBar style="auto" />
       </User.Provider>
     </>

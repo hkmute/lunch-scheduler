@@ -17,6 +17,7 @@ import {
   useFocusEffect,
   useNavigation,
 } from "@react-navigation/native";
+import { format } from "date-fns";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Main">;
 type MainNavigationProp = CompositeNavigationProp<
@@ -59,8 +60,22 @@ export default function MainRoute({ route }: Props) {
           },
         })}
       >
-        <Tab.Screen name="Today" component={TodayScreen} />
-        <Tab.Screen name="History" component={HistoryScreen} />
+        <Tab.Screen
+          name="Today"
+          component={TodayScreen}
+          options={{
+            tabBarLabel: "今日",
+            headerTitle: format(new Date(), "yyyy-MM-dd"),
+          }}
+        />
+        <Tab.Screen
+          name="History"
+          component={HistoryScreen}
+          options={{
+            tabBarLabel: "歷史",
+            headerTitle: "歷史記錄",
+          }}
+        />
       </Tab.Navigator>
     </RoomCode.Provider>
   );
