@@ -9,6 +9,7 @@ services:
 
   db:
     image: mysql
+    profiles: ['dev']
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
