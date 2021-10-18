@@ -38,6 +38,13 @@ export function InternalService(knex: Knex) {
         .groupBy('codeId');
     },
 
+    insertTodaySystemVote: async (results: { optionId: number; codeId: number }[]) => {
+      const today = format(new Date(), 'yyyy-MM-dd');
+      return await knex<Vote>('vote').insert(
+        results.map((result) => ({ date: today, option_id: result.optionId, code_id: result.codeId, user: 'system' }))
+      );
+    },
+
     insertResults: async (results: { optionId: number; codeId: number }[]) => {
       const today = format(new Date(), 'yyyy-MM-dd');
       return await knex<History>('history').insert(

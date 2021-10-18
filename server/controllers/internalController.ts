@@ -32,7 +32,7 @@ export function InternalController(service: ReturnType<typeof InternalService>) 
           );
           return acc;
         }, []);
-        await service.insertTodayOptions(todayOptions);
+        await Promise.all([service.insertTodayOptions(todayOptions), service.insertTodaySystemVote(todayOptions)]);
         return;
       } catch (error) {
         console.error(error.message);

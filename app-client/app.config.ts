@@ -18,6 +18,7 @@ export default {
     },
     assetBundlePatterns: ["**/*"],
     ios: {
+      bundleIdentifier: "com.hkmute.lunchscheduler",
       supportsTablet: true,
     },
     android: {
