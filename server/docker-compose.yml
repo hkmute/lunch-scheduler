@@ -1,7 +1,5 @@
 services:
   server:
-    depends_on:
-      - db
     build: .
     restart: always
     ports:
