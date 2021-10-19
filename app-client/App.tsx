@@ -65,11 +65,25 @@ export default function App() {
   const scheduleNotificationAsync = () => {
     Notifications.scheduleNotificationAsync({
       content: {
-        title: "Look at that notification",
-        body: "I'm so proud of myself!",
+        title: "可以投票lunch食乜了",
+        body: "立即投票",
       },
       trigger: {
-        seconds: 10,
+        hour: 9,
+        minute: 0,
+        repeats: true,
+      },
+    });
+
+    Notifications.scheduleNotificationAsync({
+      content: {
+        title: "可以查看lunch食乜了",
+        body: "立即查看",
+      },
+      trigger: {
+        hour: 13,
+        minute: 40,
+        repeats: true,
       },
     });
   };
