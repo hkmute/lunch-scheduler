@@ -12,7 +12,7 @@ import { API_BASE_URL } from "@env";
 import { format, parseISO } from "date-fns";
 import { RoomCode } from "../../AppContext";
 import { useFocusEffect } from "@react-navigation/native";
-
+import * as Sentry from "sentry-expo";
 interface HistoryItem {
   id: 0;
   date: "string";
@@ -56,6 +56,7 @@ export default function HistoryScreen() {
       return await res.json();
     } catch (err) {
       console.log(err);
+      Sentry.Native.captureException(err);
     }
   };
 

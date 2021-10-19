@@ -13,6 +13,7 @@ export default {
       resizeMode: "contain",
       backgroundColor: "#ffffff",
     },
+    plugins: ["sentry-expo"],
     updates: {
       fallbackToCacheTimeout: 0,
     },
@@ -30,6 +31,18 @@ export default {
     },
     web: {
       favicon: "./assets/favicon.png",
+    },
+    hooks: {
+      postPublish: [
+        {
+          file: "sentry-expo/upload-sourcemaps",
+          config: {
+            organization: "your sentry organization's short name here",
+            project: "your sentry project's name here",
+            authToken: "your auth token here",
+          },
+        },
+      ],
     },
   },
 };

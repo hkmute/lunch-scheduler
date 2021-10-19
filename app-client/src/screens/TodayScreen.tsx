@@ -6,6 +6,7 @@ import { RoomCode } from "../../AppContext";
 import Choice from "../components/Choice";
 import Result from "../components/Result";
 import styles from "../styles/styles";
+import * as Sentry from "sentry-expo";
 
 export default function TodayScreen() {
   const [loading, setLoading] = useState(true);
@@ -33,6 +34,7 @@ export default function TodayScreen() {
       return await res.json();
     } catch (err) {
       console.log(err);
+      Sentry.Native.captureException(err);
     } finally {
       setLoading(false);
     }

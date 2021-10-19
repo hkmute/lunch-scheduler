@@ -12,12 +12,15 @@ import { ActivityIndicator, Text, View } from "react-native";
 import { APP_VERSION } from "@env";
 import * as Notifications from "expo-notifications";
 import { AndroidNotificationPriority } from "expo-notifications";
+import { initSentry } from "./src/utils/sentry";
+import * as Sentry from "sentry-expo";
 
 export default function App() {
   const Stack = createNativeStackNavigator<RootStackParamList>();
   const [user, setUser] = useState("");
 
   useEffect(() => {
+    initSentry();
     getUserData();
     setNotificationHandler();
     scheduleNotificationAsync();
@@ -35,6 +38,7 @@ export default function App() {
       }
     } catch (e) {
       console.log(e);
+      Sentry.Native.captureException(e);
     }
   };
 
@@ -43,6 +47,7 @@ export default function App() {
       await AsyncStorage.setItem("user", value);
     } catch (e) {
       console.log(e);
+      Sentry.Native.captureException(e);
     }
   };
 
