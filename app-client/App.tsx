@@ -10,6 +10,8 @@ import { nanoid } from "nanoid";
 import { User } from "./AppContext";
 import { ActivityIndicator, Text, View } from "react-native";
 import { APP_VERSION } from "@env";
+import * as Notifications from "expo-notifications";
+import { AndroidNotificationPriority } from "expo-notifications";
 
 export default function App() {
   const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -17,6 +19,8 @@ export default function App() {
 
   useEffect(() => {
     getUserData();
+    setNotificationHandler();
+    scheduleNotificationAsync();
   }, []);
 
   const getUserData = async () => {
@@ -40,6 +44,29 @@ export default function App() {
     } catch (e) {
       console.log(e);
     }
+  };
+
+  const setNotificationHandler = () => {
+    Notifications.setNotificationHandler({
+      handleNotification: async () => ({
+        shouldShowAlert: true,
+        shouldPlaySound: false,
+        shouldSetBadge: false,
+        priority: AndroidNotificationPriority.HIGH,
+      }),
+    });
+  };
+
+  const scheduleNotificationAsync = () => {
+    Notifications.scheduleNotificationAsync({
+      content: {
+        title: "Look at that notification",
+        body: "I'm so proud of myself!",
+      },
+      trigger: {
+        seconds: 10,
+      },
+    });
   };
 
   return (

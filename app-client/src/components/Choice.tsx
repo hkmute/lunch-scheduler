@@ -72,7 +72,9 @@ export default function Choice(props: { code: string }) {
       });
       if (res.ok) {
         const vote = await fetchTodayVote();
-        setVote(vote.data[0].name);
+        if (vote.data.length) {
+          setVote(vote.data[0].name);
+        }
       }
     } catch (err) {
       console.log(err);
