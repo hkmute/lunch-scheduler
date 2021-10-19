@@ -37,9 +37,9 @@ export default {
         {
           file: "sentry-expo/upload-sourcemaps",
           config: {
-            organization: "your sentry organization's short name here",
-            project: "your sentry project's name here",
-            authToken: "your auth token here",
+            organization: process.env.SENTRY_ORG,
+            project: process.env.SENTRY_PROJECT,
+            authToken: process.env.SENTRY_AUTH_TOKEN,
           },
         },
       ],

@@ -81,8 +81,8 @@ export default function App() {
         body: "立即查看",
       },
       trigger: {
-        hour: 13,
-        minute: 40,
+        hour: 12,
+        minute: 0,
         repeats: true,
       },
     });
