@@ -62,7 +62,7 @@ export function InternalController(service: ReturnType<typeof InternalService>) 
         const results: { optionId: number; codeId: number }[] = [];
         for (const codeId in obj) {
           const options = obj[codeId];
-          const totalVotes = options.reduce((acc, cur) => acc + cur.count, options.length);
+          const totalVotes = options.reduce((acc, cur) => acc + cur.count, 0);
           let random = Math.random();
           for (const option of options) {
             random = random - option.count / totalVotes;
