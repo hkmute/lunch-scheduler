@@ -25,7 +25,8 @@ export function Service(knex: Knex) {
       return await knex<OptionList[]>('option_list')
         .join<Code>('code', 'code.option_list_id', 'option_list.id')
         .select(knex.ref('id').withSchema('option_list'), knex.ref('name').withSchema('option_list'))
-        .where('code', code);
+        .where('code', code)
+        .first();
     },
 
     getOptionListDetailsByCode: async (code: string) => {
@@ -42,8 +43,12 @@ export function Service(knex: Knex) {
             knex.ref('name').withSchema('options'),
           ]) as any as Knex.Ref<'details', { details: 'details' }>
         )
-        .groupBy('id');
-      return res.map((row) => ({ ...row, details: JSON.parse(row.details) }));
+        .groupBy('id')
+        .first();
+      if (!res) {
+        return null;
+      }
+      return { ...res, details: JSON.parse(res.details) };
     },
 
     getTodayOptionsByCode: async (code: string) => {

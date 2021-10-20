@@ -99,14 +99,12 @@
               type: object
               properties:
                 data:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      id:
-                        type: integer
-                      name:
-                        type: string
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
       default:
         $ref: '#components/responses/DefaultErrors'
 /option-list/{code}/details:
@@ -124,22 +122,19 @@
             schema:
               type: object
               properties:
-                data:
-                  type: array
-                  items:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  details:
                     type: object
                     properties:
-                      id:
+                      optionId:
                         type: integer
-                      name:
+                      optionName:
                         type: string
-                      details:
-                        type: object
-                        properties:
-                          optionId:
-                            type: integer
-                          optionName:
-                            type: string
       default:
         $ref: '#components/responses/DefaultErrors'
 /today-options/{code}:
