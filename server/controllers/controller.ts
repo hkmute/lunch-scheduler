@@ -9,7 +9,7 @@ export function Controller(service: ReturnType<typeof Service>) {
         res.json({ data: options });
       } catch (error) {
         console.error(error.message);
-        res.status(500).json({ message: 'interval server error' });
+        res.status(500).json({ message: 'internal server error' });
       }
     },
 
@@ -20,7 +20,7 @@ export function Controller(service: ReturnType<typeof Service>) {
         res.json({ data: history });
       } catch (error) {
         console.error(error.message);
-        res.status(500).json({ message: 'interval server error' });
+        res.status(500).json({ message: 'internal server error' });
       }
     },
 
@@ -31,7 +31,7 @@ export function Controller(service: ReturnType<typeof Service>) {
         res.json({ data: optionList });
       } catch (error) {
         console.error(error.message);
-        res.status(500).json({ message: 'interval server error' });
+        res.status(500).json({ message: 'internal server error' });
       }
     },
 
@@ -42,7 +42,7 @@ export function Controller(service: ReturnType<typeof Service>) {
         res.json({ data: optionListDetails });
       } catch (error) {
         console.error(error.message);
-        res.status(500).json({ message: 'interval server error' });
+        res.status(500).json({ message: 'internal server error' });
       }
     },
 
@@ -53,7 +53,7 @@ export function Controller(service: ReturnType<typeof Service>) {
         res.json({ data: todayOptions });
       } catch (error) {
         console.error(error.message);
-        res.status(500).json({ message: 'interval server error' });
+        res.status(500).json({ message: 'internal server error' });
       }
     },
 
@@ -65,7 +65,7 @@ export function Controller(service: ReturnType<typeof Service>) {
         res.json({ data: votes });
       } catch (error) {
         console.error(error.message);
-        res.status(500).json({ message: 'interval server error' });
+        res.status(500).json({ message: 'internal server error' });
       }
     },
 
@@ -80,7 +80,7 @@ export function Controller(service: ReturnType<typeof Service>) {
         return res.status(votes.code).json({ message: votes.message });
       } catch (error) {
         console.error(error.message);
-        return res.status(500).json({ message: 'interval server error' });
+        return res.status(500).json({ message: 'internal server error' });
       }
     },
 
@@ -91,7 +91,7 @@ export function Controller(service: ReturnType<typeof Service>) {
         res.json({ data: result ?? null });
       } catch (error) {
         console.error(error.message);
-        res.status(500).json({ message: 'interval server error' });
+        res.status(500).json({ message: 'internal server error' });
       }
     },
   });

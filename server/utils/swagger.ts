@@ -15,8 +15,8 @@ const options: swaggerJSDoc.OAS3Options = {
     servers: [
       { url: `http://localhost:${process.env.SERVER_PORT}/`, description: 'Local development server' },
       {
-        url: 'http://staging-api.example.com',
-        description: 'Optional server description, e.g. Internal staging server for testing',
+        url: process.env.SERVER_HOST ?? '',
+        description: 'Production server',
       },
     ],
     tags: [
