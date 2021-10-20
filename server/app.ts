@@ -6,10 +6,21 @@ import cors from 'cors';
 import swaggerSpec from './utils/swagger';
 import { routes } from './routes';
 import { scheduleTask } from './utils/cron';
+import * as Sentry from '@sentry/node';
+import * as Tracing from '@sentry/tracing';
 
 dotenv.config();
 const app = express();
 const PORT = process.env.SERVER_PORT;
+
+Sentry.init({
+  dsn: 'https://8db1ff1be6384755999dc7dda7b611ea@o1043560.ingest.sentry.io/6020498',
+  integrations: [new Sentry.Integrations.Http({ tracing: true }), new Tracing.Integrations.Express({ app })],
+  tracesSampleRate: 1.0,
+});
+
+app.use(Sentry.Handlers.requestHandler());
+app.use(Sentry.Handlers.tracingHandler());
 
 app.use(
   cors({
@@ -29,6 +40,8 @@ app.get('/', (req, res) => {
 });
 
 scheduleTask();
+
+app.use(Sentry.Handlers.errorHandler());
 
 app.listen(PORT, () => {
   console.log(`Server listening at http://localhost:${PORT}`);
