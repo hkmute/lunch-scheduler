@@ -14,7 +14,7 @@ const app = express();
 const PORT = process.env.SERVER_PORT;
 
 Sentry.init({
-  dsn: 'https://8db1ff1be6384755999dc7dda7b611ea@o1043560.ingest.sentry.io/6020498',
+  dsn: process.env.SENTRY_DSN,
   integrations: [new Sentry.Integrations.Http({ tracing: true }), new Tracing.Integrations.Express({ app })],
   tracesSampleRate: 1.0,
 });
