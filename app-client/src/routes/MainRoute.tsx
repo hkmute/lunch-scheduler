@@ -57,6 +57,15 @@ export default function MainRoute({ route }: Props) {
                   <FontAwesome5 name="history" size={size} color={color} />
                 );
               }
+              case "Setting": {
+                return (
+                  <Ionicons
+                    name="md-settings-sharp"
+                    size={size}
+                    color={color}
+                  />
+                );
+              }
             }
           },
         })}
@@ -78,7 +87,7 @@ export default function MainRoute({ route }: Props) {
           }}
         />
         <Tab.Screen
-          name="History"
+          name="Setting"
           component={SettingScreen}
           options={{
             tabBarLabel: "設定",

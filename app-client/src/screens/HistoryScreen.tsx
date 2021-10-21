@@ -11,7 +11,7 @@ import styles from "../styles/styles";
 import { API_BASE_URL } from "@env";
 import { format, parseISO } from "date-fns";
 import { RoomCode } from "../../AppContext";
-import { useFocusEffect } from "@react-navigation/native";
+import { useFocusEffect, useTheme } from "@react-navigation/native";
 import * as Sentry from "sentry-expo";
 interface HistoryItem {
   id: number;
@@ -20,6 +20,7 @@ interface HistoryItem {
 }
 
 export default function HistoryScreen() {
+  const theme = useTheme();
   const code = useContext(RoomCode);
   const [historyData, setHistoryData] = useState<HistoryItem[]>([]);
   const [refreshing, setRefreshing] = useState(false);
@@ -75,10 +76,12 @@ export default function HistoryScreen() {
                 flexDirection: "row",
               }}
             >
-              <Text style={{ flex: 1, textAlign: "center" }}>
+              <Text style={{ flex: 1, textAlign: "center", fontSize: 16 }}>
                 {format(parseISO(item.date), "yyyy-MM-dd")}
               </Text>
-              <Text style={{ flex: 2, textAlign: "center" }}>{item.name}</Text>
+              <Text style={{ flex: 2, textAlign: "center", fontSize: 16 }}>
+                {item.name}
+              </Text>
             </View>
           )}
           keyExtractor={(item) => String(item.id)}
@@ -86,7 +89,7 @@ export default function HistoryScreen() {
             <View
               style={{
                 height: 1,
-                backgroundColor: "#CED0CE",
+                backgroundColor: theme.colors.border,
               }}
             />
           )}

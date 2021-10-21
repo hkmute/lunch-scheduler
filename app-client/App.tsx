@@ -14,6 +14,7 @@ import * as Notifications from "expo-notifications";
 import { AndroidNotificationPriority } from "expo-notifications";
 import { initSentry } from "./src/utils/sentry";
 import * as Sentry from "sentry-expo";
+import { MyTheme } from "./theme";
 
 export default function App() {
   const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -92,7 +93,7 @@ export default function App() {
     <>
       <User.Provider value={user}>
         {user ? (
-          <NavigationContainer>
+          <NavigationContainer theme={MyTheme}>
             <Stack.Navigator>
               <Stack.Screen
                 name="Home"
