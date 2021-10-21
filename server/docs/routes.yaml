@@ -122,19 +122,22 @@
             schema:
               type: object
               properties:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                  name:
-                    type: string
-                  details:
-                    type: object
-                    properties:
-                      optionId:
-                        type: integer
-                      optionName:
-                        type: string
+                data:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    details:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          optionId:
+                            type: integer
+                          optionName:
+                            type: string
       default:
         $ref: '#components/responses/DefaultErrors'
 /today-options/{code}:
