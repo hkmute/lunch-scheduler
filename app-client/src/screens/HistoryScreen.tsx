@@ -14,9 +14,9 @@ import { RoomCode } from "../../AppContext";
 import { useFocusEffect } from "@react-navigation/native";
 import * as Sentry from "sentry-expo";
 interface HistoryItem {
-  id: 0;
-  date: "string";
-  name: "string";
+  id: number;
+  date: string;
+  name: string;
 }
 
 export default function HistoryScreen() {
@@ -42,7 +42,7 @@ export default function HistoryScreen() {
     }, [])
   );
 
-  const onRefresh = React.useCallback(() => {
+  const onRefresh = useCallback(() => {
     setRefreshing(true);
     fetchHistory().then((result) => {
       setHistoryData(result.data);

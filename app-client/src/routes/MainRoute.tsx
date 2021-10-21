@@ -18,6 +18,7 @@ import {
   useNavigation,
 } from "@react-navigation/native";
 import { format } from "date-fns";
+import SettingScreen from "../screens/SettingScreen";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Main">;
 type MainNavigationProp = CompositeNavigationProp<
@@ -74,6 +75,14 @@ export default function MainRoute({ route }: Props) {
           options={{
             tabBarLabel: "歷史",
             headerTitle: "歷史記錄",
+          }}
+        />
+        <Tab.Screen
+          name="History"
+          component={SettingScreen}
+          options={{
+            tabBarLabel: "設定",
+            headerTitle: "設定",
           }}
         />
       </Tab.Navigator>

@@ -5,4 +5,5 @@ type RootStackParamList = {
 type RootBottomTabParamList = {
   Today: undefined;
   History: undefined;
+  Setting: undefined;
 };
