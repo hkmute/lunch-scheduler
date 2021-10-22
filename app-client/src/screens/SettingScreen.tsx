@@ -126,9 +126,6 @@ export default function SettingScreen() {
         }
         ListFooterComponent={ItemSeparator}
       />
-      <View style={{ padding: 8 }}>
-        <Button title="加入名單" onPress={() => {}} />
-      </View>
     </SafeAreaView>
   );
 }

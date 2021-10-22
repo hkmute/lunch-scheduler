@@ -19,6 +19,7 @@ import {
 } from "@react-navigation/native";
 import { format } from "date-fns";
 import SettingScreen from "../screens/SettingScreen";
+import { View } from "react-native";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Main">;
 type MainNavigationProp = CompositeNavigationProp<
@@ -92,6 +93,11 @@ export default function MainRoute({ route }: Props) {
           options={{
             tabBarLabel: "設定",
             headerTitle: "設定",
+            headerRight: () => (
+              <View style={{ padding: 16 }}>
+                <FontAwesome5 name="plus" size={24} color="black" />
+              </View>
+            ),
           }}
         />
       </Tab.Navigator>
