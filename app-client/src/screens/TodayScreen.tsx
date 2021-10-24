@@ -116,7 +116,6 @@ export default function TodayScreen() {
             height: "100%",
             width: "100%",
             justifyContent: "center",
-            alignItems: "center",
           }}
         >
           <ActivityIndicator size="large" color="#999" />

@@ -7,6 +7,7 @@ import { Button, TextInput, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
+import GoogleAuth from "../components/GoogleAuth";
 
 type HomeScreenNavigationProp = CompositeNavigationProp<
   NativeStackNavigationProp<RootStackParamList, "Home">,
@@ -46,6 +47,9 @@ export default function Home() {
       />
       <View style={{ width: "30%" }}>
         <Button title="進入" onPress={onSubmit} />
+      </View>
+      <View style={{ margin: 2 }}>
+        <GoogleAuth />
       </View>
     </SafeAreaView>
   );

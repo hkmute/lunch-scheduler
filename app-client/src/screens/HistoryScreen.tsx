@@ -64,7 +64,7 @@ export default function HistoryScreen() {
   return (
     <SafeAreaView style={{ ...styles.container, justifyContent: "center" }}>
       {loading ? (
-        <ActivityIndicator />
+        <ActivityIndicator size="large" color="#999" />
       ) : historyData.length ? (
         <FlatList
           data={historyData}

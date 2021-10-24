@@ -68,7 +68,9 @@ export default function App() {
           </Stack.Navigator>
         </NavigationContainer>
       ) : (
-        <ActivityIndicator />
+        <View style={{ flex: 1, alignItems: "center", backgroundColor: "red" }}>
+          <ActivityIndicator size="large" color="#999" />
+        </View>
       )}
       <View
         style={{
