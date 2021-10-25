@@ -26,7 +26,7 @@ export default function TodayScreen() {
   const [result, setResult] = useState("");
   const [options, setOptions] = useState<Option[]>([]);
   const [vote, setVote] = useState<Vote[]>([]);
-  const loading = !result && !options.length && !vote.length;
+  const [loading, setLoading] = useState(true);
   const code = useContext(RoomCode);
   const user = useContext(User);
 
@@ -35,7 +35,7 @@ export default function TodayScreen() {
       let isActive = true;
       fetchTodayResult().then((result) => {
         if (isActive) {
-          if (result) {
+          if (result.data) {
             return setResult(result?.data?.name ?? null);
           }
           fetchTodayVote().then((vote) => {
@@ -49,6 +49,7 @@ export default function TodayScreen() {
             }
           });
         }
+        setLoading(false);
       });
       return () => {
         isActive = false;
