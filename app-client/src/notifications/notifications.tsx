@@ -13,7 +13,8 @@ export const initNotifications = () => {
   scheduleNotifications();
 };
 
-const scheduleNotifications = () => {
+const scheduleNotifications = async () => {
+  await Notifications.cancelAllScheduledNotificationsAsync();
   Notifications.scheduleNotificationAsync({
     content: {
       title: "可以投票lunch食乜了",
