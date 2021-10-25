@@ -5,6 +5,7 @@ import { Controller } from './controllers/controller';
 import * as knexConfig from './knexfile';
 import { AuthService } from './services/authService';
 import { Service } from './services/service';
+import { isLoggedIn } from './utils/guard';
 
 export const knex = Knex(knexConfig[process.env.NODE_ENV || 'development']);
 const service = Service(knex);
@@ -24,3 +25,4 @@ routes.get('/votes/:code', controller.getTodayVoteByCode);
 routes.post('/votes/:code', controller.postTodayVote);
 
 routes.post('/login/google', authController.googleLogin);
+routes.get('/login/test', isLoggedIn, authController.testLogin);
