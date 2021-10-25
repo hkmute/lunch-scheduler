@@ -1,6 +1,7 @@
 import { format } from 'date-fns';
 import { Knex } from 'knex';
 import { Options, History, OptionList, Code, OptionInList, Vote } from './model';
+import fetch from 'node-fetch';
 
 export function Service(knex: Knex) {
   return Object.freeze({
@@ -121,6 +122,31 @@ export function Service(knex: Knex) {
         .where('code.code', code)
         .whereRaw('history.date = CURDATE()')
         .first();
+    },
+
+    googleLogin: async (authCode: string) => {
+      const res = await fetch('https://oauth2.googleapis.com/token', {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          code: authCode,
+          client_id: process.env.EXPO_GOOGLE_CLIENT_ID!,
+          client_secret: process.env.EXPO_GOOGLE_CLIENT_SECRET!,
+          grant_type: 'authorization_code',
+          redirect_uri: process.env.EXPO_REDIRECT_URI,
+        }),
+      });
+      const resJson = await res.json();
+      const accessCode = resJson.access_token;
+      const fetchUserInfo = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accessCode}`,
+        },
+      });
+      return await fetchUserInfo.json();
     },
   });
 }

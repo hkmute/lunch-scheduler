@@ -94,5 +94,17 @@ export function Controller(service: ReturnType<typeof Service>) {
         res.status(500).json({ message: 'internal server error' });
       }
     },
+
+    googleLogin: async (req: Request, res: Response) => {
+      try {
+        const authCode = req.body.authCode;
+        const userInfo = await service.googleLogin(authCode);
+        console.log('hi', userInfo);
+        res.json({ data: userInfo ?? null });
+      } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ message: 'internal server error' });
+      }
+    },
   });
 }
