@@ -2,12 +2,13 @@ import {
   useNavigation,
   CompositeNavigationProp,
 } from "@react-navigation/native";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Button, TextInput, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
 import GoogleAuth from "../components/GoogleAuth";
+import { User } from "../../AppContext";
 
 type HomeScreenNavigationProp = CompositeNavigationProp<
   NativeStackNavigationProp<RootStackParamList, "Home">,
@@ -18,6 +19,7 @@ export default function Home() {
   const navigation = useNavigation<HomeScreenNavigationProp>();
   const [code, setCode] = useState("");
   const [error, setError] = useState(false);
+  const user = useContext(User);
 
   const onSubmit = () => {
     if (code) {
@@ -32,6 +34,11 @@ export default function Home() {
     <SafeAreaView
       style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
     >
+      {!!user && (
+        <Text style={{ fontSize: 16, width: "50%", marginBottom: 8 }}>
+          你好，{user}
+        </Text>
+      )}
       <Text style={{ fontSize: 20, width: "50%" }}>輸入編號：</Text>
       <TextInput
         onChangeText={setCode}
@@ -48,9 +55,7 @@ export default function Home() {
       <View style={{ width: "30%" }}>
         <Button title="進入" onPress={onSubmit} />
       </View>
-      <View style={{ margin: 2 }}>
-        <GoogleAuth />
-      </View>
+      <View style={{ margin: 2 }}>{!user && <GoogleAuth />}</View>
     </SafeAreaView>
   );
 }
