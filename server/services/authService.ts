@@ -41,7 +41,11 @@ export function AuthService(knex: Knex) {
       return userInfo as GoogleUserInfo;
     },
 
-    getUserInfo: async (email: string) => {
+    getUserInfoById: async (id: string) => {
+      return await knex<User>('user').select('id', 'name', 'email').where('id', id).first();
+    },
+
+    getUserInfoByEmail: async (email: string) => {
       return await knex<User>('user').select().where('email', email).first();
     },
 

@@ -24,5 +24,6 @@ routes.get('/today-options/:code', controller.getTodayOptionsByCode);
 routes.get('/votes/:code', controller.getTodayVoteByCode);
 routes.post('/votes/:code', controller.postTodayVote);
 
+routes.get('/user/me', authController.getUserInfoById);
 routes.post('/login/google', authController.googleLogin);
 routes.get('/login/test', isLoggedIn, authController.testLogin);
