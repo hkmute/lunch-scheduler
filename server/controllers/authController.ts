@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 export function AuthController(service: ReturnType<typeof AuthService>) {
   return Object.freeze({
     testLogin: (req: Request, res: Response) => {
-      res.json({ message: 'good' });
+      res.json({ message: req.user });
     },
 
     googleLogin: async (req: Request, res: Response) => {

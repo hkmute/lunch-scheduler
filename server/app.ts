@@ -37,6 +37,7 @@ app.use((req, res, next) => {
   logger.info({
     path: req.path,
     method: req.method,
+    header: req.headers,
     query: req.query,
     body: req.body,
     cookie: req.cookies,

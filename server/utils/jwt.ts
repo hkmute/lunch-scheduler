@@ -1,21 +1,20 @@
 import { Request, Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
-import { User } from '../services/model';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import { logger } from './logger';
 
 export async function isLoggedIn(req: Request, res: Response, next: NextFunction) {
-  const token = extractToken(req);
-  if (!token) {
-    return res.status(401).json({ message: 'Permission Denied' });
-  }
-  return jwt.verify(token, process.env.JWT_SECRET!, (err, userInfo: User) => {
-    if (err) {
-      logger.info(err);
+  try {
+    const token = extractToken(req);
+    if (!token) {
       return res.status(401).json({ message: 'Permission Denied' });
     }
-    req.user = userInfo;
+    const tokenInfo = await verifyToken(token);
+    req.user = tokenInfo.id;
     return next();
-  });
+  } catch (err) {
+    logger.info(err);
+    return res.status(401).json({ message: 'Permission Denied' });
+  }
 }
 
 function extractToken(req: Request) {
@@ -28,4 +27,8 @@ function extractToken(req: Request) {
     return token;
   }
   return;
+}
+
+export async function verifyToken(token: string) {
+  return (await jwt.verify(token, process.env.JWT_SECRET!)) as JwtPayload;
 }

@@ -5,7 +5,7 @@ import { Controller } from './controllers/controller';
 import * as knexConfig from './knexfile';
 import { AuthService } from './services/authService';
 import { Service } from './services/service';
-import { isLoggedIn } from './utils/guard';
+import { isLoggedIn } from './utils/jwt';
 
 export const knex = Knex(knexConfig[process.env.NODE_ENV || 'development']);
 const service = Service(knex);
