@@ -2,7 +2,7 @@ import { API_BASE_URL } from "@env";
 import { useFocusEffect } from "@react-navigation/native";
 import React, { useCallback, useContext, useState } from "react";
 import { ActivityIndicator, View, Text } from "react-native";
-import { RoomCode, User } from "../../AppContext";
+import { RoomCode, Guest } from "../../AppContext";
 import Choice from "../components/Choice";
 import Result from "../components/Result";
 import styles from "../styles/styles";
@@ -26,16 +26,16 @@ export default function TodayScreen() {
   const [result, setResult] = useState("");
   const [options, setOptions] = useState<Option[]>([]);
   const [vote, setVote] = useState<Vote[]>([]);
-  const loading = !result && !options.length && !vote.length;
+  const [loading, setLoading] = useState(true);
   const code = useContext(RoomCode);
-  const user = useContext(User);
+  const user = useContext(Guest);
 
   useFocusEffect(
     useCallback(() => {
       let isActive = true;
       fetchTodayResult().then((result) => {
         if (isActive) {
-          if (result) {
+          if (result.data) {
             return setResult(result?.data?.name ?? null);
           }
           fetchTodayVote().then((vote) => {
@@ -49,6 +49,7 @@ export default function TodayScreen() {
             }
           });
         }
+        setLoading(false);
       });
       return () => {
         isActive = false;

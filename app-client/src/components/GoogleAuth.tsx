@@ -5,6 +5,7 @@ import { Button, Text } from "react-native";
 import { API_BASE_URL, EXPO_CLIENT_ID } from "@env";
 import * as Sentry from "sentry-expo";
 import { ResponseType } from "expo-auth-session";
+import * as SecureStore from "expo-secure-store";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -23,7 +24,6 @@ export default function GoogleAuth() {
   useEffect(() => {
     if (response?.type === "success") {
       const { params } = response;
-      console.log(params);
       if (params.code) {
         googleLogin(params.code);
       }
@@ -41,14 +41,18 @@ export default function GoogleAuth() {
           authCode,
         }),
       });
-      const userInfo = await res.json();
+      const userInfo: { token: string; data: { name: string } } =
+        await res.json();
       setUserInfo(JSON.stringify(userInfo));
-      return userInfo;
+      saveToken(userInfo.token);
+      return;
     } catch (err) {
       Sentry.Native.captureException(err);
       console.log(err);
     }
   };
+
+  const saveToken = (token: string) => SecureStore.setItemAsync("token", token);
 
   return (
     <>

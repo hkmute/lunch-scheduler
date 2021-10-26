@@ -11,7 +11,7 @@ export default function Choice(props: {
 }) {
   return (
     <View style={{ ...styles.container, justifyContent: "center", margin: 16 }}>
-      {props.vote ? (
+      {props.vote.length ? (
         <>
           <Text style={{ textAlign: "center" }}>
             你今天的選擇是 {props.vote}
