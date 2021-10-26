@@ -17,6 +17,7 @@ export interface OptionList {
 
 export interface Code {
   id: number;
+  owner_id: number;
   code: string;
   option_list_id: number;
 }
@@ -33,4 +34,18 @@ export interface Vote {
   user: string;
   option_id: number;
   code_id: number;
+}
+
+export interface User {
+  id: number;
+  email: string;
+  name: string;
+}
+
+declare global {
+  namespace Express {
+    interface Request {
+      user?: User;
+    }
+  }
 }

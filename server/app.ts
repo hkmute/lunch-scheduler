@@ -8,6 +8,8 @@ import { routes } from './routes';
 import { scheduleTask } from './utils/cron';
 import * as Sentry from '@sentry/node';
 import * as Tracing from '@sentry/tracing';
+import './utils/logger';
+import { logger } from './utils/logger';
 
 dotenv.config();
 const app = express();
@@ -31,6 +33,19 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use((req, res, next) => {
+  logger.info({
+    path: req.path,
+    method: req.method,
+    header: req.headers,
+    query: req.query,
+    body: req.body,
+    cookie: req.cookies,
+    ip: req.ip,
+    ips: req.ips,
+  });
+  next();
+});
 app.use(routes);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use('/swagger', (req, res) => res.sendFile(path.join(__dirname, '/swagger.json')));
