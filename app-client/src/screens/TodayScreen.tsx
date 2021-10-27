@@ -1,12 +1,16 @@
-import { API_BASE_URL } from "@env";
 import { useFocusEffect } from "@react-navigation/native";
 import React, { useCallback, useContext, useState } from "react";
-import { ActivityIndicator, View, Text } from "react-native";
+import { ActivityIndicator, View } from "react-native";
 import { RoomCode, Guest } from "../../AppContext";
+import {
+  fetchTodayResult,
+  fetchTodayVote,
+  fetchTodayOptions,
+  postTodayVote,
+} from "../api/api";
 import Choice from "../components/Choice";
 import Result from "../components/Result";
 import styles from "../styles/styles";
-import * as Sentry from "sentry-expo";
 
 export interface Option {
   id: number;
@@ -33,17 +37,17 @@ export default function TodayScreen() {
   useFocusEffect(
     useCallback(() => {
       let isActive = true;
-      fetchTodayResult().then((result) => {
+      fetchTodayResult(code).then((result) => {
         if (isActive) {
           if (result.data) {
             return setResult(result?.data?.name ?? null);
           }
-          fetchTodayVote().then((vote) => {
+          fetchTodayVote(code, user).then((vote) => {
             if (isActive) {
               if (vote?.data.length) {
                 return setVote(vote.data[0].name);
               }
-              fetchTodayOptions().then((result) => {
+              fetchTodayOptions(code).then((result) => {
                 return setOptions(result.data);
               });
             }
@@ -57,54 +61,13 @@ export default function TodayScreen() {
     }, [])
   );
 
-  const fetchTodayResult = async () => {
-    try {
-      const res = await fetch(`${API_BASE_URL}/history/${code}/today`);
-      return await res.json();
-    } catch (err) {
-      console.log(err);
-      Sentry.Native.captureException(err);
-    }
-  };
-
-  const fetchTodayOptions = async () => {
-    try {
-      const res = await fetch(`${API_BASE_URL}/today-options/${code}`);
-      return await res.json();
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const fetchTodayVote = async () => {
-    try {
-      const res = await fetch(`${API_BASE_URL}/votes/${code}?user=${user}`);
-      return await res.json();
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   const handlePress = (id: number) => async () => {
-    try {
-      const res = await fetch(`${API_BASE_URL}/votes/${code}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          user,
-          optionId: id,
-        }),
-      });
-      if (res.ok) {
-        const vote = await fetchTodayVote();
-        if (vote.data.length) {
-          setVote(vote.data[0].name);
-        }
+    const ok = await postTodayVote(id, code, user);
+    if (ok) {
+      const vote = await fetchTodayVote(code, user);
+      if (vote?.data.length) {
+        setVote(vote.data[0].name);
       }
-    } catch (err) {
-      console.log(err);
     }
   };
 
