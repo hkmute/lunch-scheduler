@@ -4,11 +4,10 @@ import { logger } from './logger';
 
 export async function isLoggedIn(req: Request, res: Response, next: NextFunction) {
   try {
-    const token = extractToken(req);
-    if (!token) {
+    const tokenInfo = await extractTokenInfo(req);
+    if (!tokenInfo) {
       return res.status(401).json({ message: 'Permission Denied' });
     }
-    const tokenInfo = await verifyToken(token);
     req.user = tokenInfo.id;
     return next();
   } catch (err) {
@@ -31,4 +30,10 @@ export function extractToken(req: Request) {
 
 export async function verifyToken(token: string) {
   return (await jwt.verify(token, process.env.JWT_SECRET!)) as JwtPayload;
+}
+
+export async function extractTokenInfo(req: Request) {
+  const token = extractToken(req);
+  if (!token) return;
+  return verifyToken(token);
 }
