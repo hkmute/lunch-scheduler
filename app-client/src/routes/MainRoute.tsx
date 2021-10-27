@@ -93,11 +93,6 @@ export default function MainRoute({ route }: Props) {
           options={{
             tabBarLabel: "設定",
             headerTitle: "設定",
-            headerRight: () => (
-              <View style={{ padding: 16 }}>
-                <FontAwesome5 name="plus" size={24} color="black" />
-              </View>
-            ),
           }}
         />
       </Tab.Navigator>

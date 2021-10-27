@@ -19,7 +19,7 @@ export default function Home() {
   const navigation = useNavigation<HomeScreenNavigationProp>();
   const [code, setCode] = useState("");
   const [error, setError] = useState(false);
-  const user = useContext(User);
+  const [user, setUser] = useContext(User);
 
   const onSubmit = () => {
     if (code) {
@@ -39,7 +39,7 @@ export default function Home() {
           你好，{user}
         </Text>
       )}
-      <Text style={{ fontSize: 20, width: "50%" }}>輸入編號：</Text>
+      <Text style={{ fontSize: 20, width: "50%" }}>輸入房號：</Text>
       <TextInput
         onChangeText={setCode}
         value={code}

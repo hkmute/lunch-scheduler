@@ -8,11 +8,10 @@ import {
   ActivityIndicator,
 } from "react-native";
 import styles from "../styles/styles";
-import { API_BASE_URL } from "@env";
 import { format, parseISO } from "date-fns";
 import { RoomCode } from "../../AppContext";
 import { useFocusEffect, useTheme } from "@react-navigation/native";
-import * as Sentry from "sentry-expo";
+import { fetchHistory } from "../api/api";
 interface HistoryItem {
   id: number;
   date: string;
@@ -29,7 +28,7 @@ export default function HistoryScreen() {
   useFocusEffect(
     useCallback(() => {
       let isActive = true;
-      fetchHistory().then((result) => {
+      fetchHistory(code).then((result) => {
         if (isActive) {
           setHistoryData(result.data);
           if (loading) {
@@ -45,21 +44,11 @@ export default function HistoryScreen() {
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    fetchHistory().then((result) => {
+    fetchHistory(code).then((result) => {
       setHistoryData(result.data);
       setRefreshing(false);
     });
   }, []);
-
-  const fetchHistory = async () => {
-    try {
-      const res = await fetch(`${API_BASE_URL}/history/${code}`);
-      return await res.json();
-    } catch (err) {
-      console.log(err);
-      Sentry.Native.captureException(err);
-    }
-  };
 
   return (
     <SafeAreaView style={{ ...styles.container, justifyContent: "center" }}>
