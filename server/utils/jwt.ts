@@ -17,7 +17,7 @@ export async function isLoggedIn(req: Request, res: Response, next: NextFunction
   }
 }
 
-function extractToken(req: Request) {
+export function extractToken(req: Request) {
   const auth = req.headers.authorization;
   if (!auth) {
     return;
