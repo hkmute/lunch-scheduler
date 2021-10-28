@@ -17,13 +17,13 @@ export function AuthService(knex: Knex) {
   return Object.freeze({
     decodeGoogleToken: async (authCode: string, os: 'Android' | 'iOS' | 'web') => {
       const osConfig = {
-        ios: {
+        iOS: {
           client_id: process.env.IOS_GOOGLE_CLIENT_ID!,
         },
-        android: {
+        Android: {
           client_id: process.env.AN_GOOGLE_CLIENT_ID!,
         },
-        expo: {
+        web: {
           client_id: process.env.EXPO_GOOGLE_CLIENT_ID!,
           client_secret: process.env.EXPO_GOOGLE_CLIENT_SECRET!,
           redirect_uri: process.env.EXPO_REDIRECT_URI,
