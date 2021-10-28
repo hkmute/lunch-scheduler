@@ -15,7 +15,20 @@ interface GoogleUserInfo {
 
 export function AuthService(knex: Knex) {
   return Object.freeze({
-    decodeGoogleToken: async (authCode: string) => {
+    decodeGoogleToken: async (authCode: string, os: 'Android' | 'iOS' | 'web') => {
+      const osConfig = {
+        ios: {
+          client_id: process.env.IOS_GOOGLE_CLIENT_ID!,
+        },
+        android: {
+          client_id: process.env.AN_GOOGLE_CLIENT_ID!,
+        },
+        expo: {
+          client_id: process.env.EXPO_GOOGLE_CLIENT_ID!,
+          client_secret: process.env.EXPO_GOOGLE_CLIENT_SECRET!,
+          redirect_uri: process.env.EXPO_REDIRECT_URI,
+        },
+      };
       const res = await fetch('https://oauth2.googleapis.com/token', {
         method: 'post',
         headers: {
@@ -23,10 +36,8 @@ export function AuthService(knex: Knex) {
         },
         body: JSON.stringify({
           code: authCode,
-          client_id: process.env.EXPO_GOOGLE_CLIENT_ID!,
-          client_secret: process.env.EXPO_GOOGLE_CLIENT_SECRET!,
           grant_type: 'authorization_code',
-          redirect_uri: process.env.EXPO_REDIRECT_URI,
+          ...osConfig[os],
         }),
       });
       const resJson = await res.json();
