@@ -18,12 +18,14 @@ export function AuthService(knex: Knex) {
     decodeGoogleToken: async (authCode: string, os: 'Android' | 'iOS' | 'expo') => {
       const osConfig = {
         iOS: {
-          redirect_uri: process.env.IOS_REDIRECT_URI,
+          client_id: process.env.IOS_GOOGLE_CLIENT_ID!,
         },
         Android: {
-          redirect_uri: process.env.AN_REDIRECT_URI,
+          client_id: process.env.AN_GOOGLE_CLIENT_ID!,
         },
         expo: {
+          client_id: process.env.EXPO_GOOGLE_CLIENT_ID!,
+          client_secret: process.env.EXPO_GOOGLE_CLIENT_SECRET!,
           redirect_uri: process.env.EXPO_REDIRECT_URI,
         },
       };
@@ -35,8 +37,6 @@ export function AuthService(knex: Knex) {
         body: JSON.stringify({
           code: authCode,
           grant_type: 'authorization_code',
-          client_id: process.env.EXPO_GOOGLE_CLIENT_ID!,
-          client_secret: process.env.EXPO_GOOGLE_CLIENT_SECRET!,
           ...osConfig[os],
         }),
       });
