@@ -26,7 +26,7 @@ export function AuthController(service: ReturnType<typeof AuthService>) {
     googleLogin: async (req: Request, res: Response) => {
       try {
         const { authCode, os } = req.body;
-        if (os !== 'Android' && os !== 'iOS' && os !== 'web') {
+        if (os !== 'Android' && os !== 'iOS' && os !== 'expo') {
           return res.status(400).json({ message: 'Unrecognized OS' });
         }
         const userGoogleInfo = await service.decodeGoogleToken(authCode, os);
