@@ -18,7 +18,6 @@ import {
 } from "react-native";
 import { RoomCode } from "../../AppContext";
 import styles from "../styles/styles";
-import * as Sentry from "sentry-expo";
 import { useFocusEffect, useNavigation } from "@react-navigation/core";
 import { Swipeable, TouchableHighlight } from "react-native-gesture-handler";
 import { MaterialIcons } from "@expo/vector-icons";

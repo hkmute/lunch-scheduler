@@ -56,7 +56,7 @@ export default function App() {
 
   const storeGuestData = async (value: string) => {
     try {
-      await AsyncStorage.setItem("user", value);
+      await AsyncStorage.setItem("guest", value);
     } catch (e) {
       console.log(e);
       Sentry.Native.captureException(e);
