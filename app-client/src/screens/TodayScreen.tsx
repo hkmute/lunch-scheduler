@@ -40,20 +40,22 @@ export default function TodayScreen() {
       fetchTodayResult(code).then((result) => {
         if (isActive) {
           if (result.data) {
+            setLoading(false);
             return setResult(result?.data?.name ?? null);
           }
           fetchTodayVote(code, user).then((vote) => {
             if (isActive) {
               if (vote?.data.length) {
+                setLoading(false);
                 return setVote(vote.data[0].name);
               }
               fetchTodayOptions(code).then((result) => {
+                setLoading(false);
                 return setOptions(result.data);
               });
             }
           });
         }
-        setLoading(false);
       });
       return () => {
         isActive = false;

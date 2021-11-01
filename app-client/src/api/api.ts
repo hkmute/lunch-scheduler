@@ -89,7 +89,7 @@ export const fetchOptionListDetails: (code: string) => Promise<{
   }
 };
 
-export const fetchGoogleLogin = async (authCode: string) => {
+export const fetchGoogleLogin = async (authCode: string, os: string) => {
   try {
     const res = await fetch(`${API_BASE_URL}/login/google`, {
       method: "POST",
@@ -98,6 +98,7 @@ export const fetchGoogleLogin = async (authCode: string) => {
       },
       body: JSON.stringify({
         authCode,
+        os,
       }),
     });
     const userInfo: { token: string; data: { name: string } } =
