@@ -16,26 +16,24 @@ export default function GoogleAuth() {
   const userContext = useContext(User);
   const [userInfo, setUserInfo] = useState("");
   const [request, response, promptAsync] = Google.useAuthRequest({
-    responseType: ResponseType.Code,
+    responseType: ResponseType.IdToken,
     expoClientId: EXPO_CLIENT_ID,
     iosClientId: IOS_CLIENT_ID,
     androidClientId: ANDROID_CLIENT_ID,
-    shouldAutoExchangeCode: false,
-    usePKCE: false,
   });
 
   useEffect(() => {
     if (response?.type === "success") {
       const { params } = response;
       const os = Constants.appOwnership === "expo" ? "expo" : Device.osName;
-      if (params.code) {
-        googleLogin(params.code, os ?? "");
+      if (params.id_token) {
+        googleLogin(params.id_token, os ?? "");
       }
     }
   }, [response]);
 
-  const googleLogin = async (authCode: string, os: string) => {
-    const userInfo = await fetchGoogleLogin(authCode, os);
+  const googleLogin = async (idToken: string, os: string) => {
+    const userInfo = await fetchGoogleLogin(idToken, os);
     if (userInfo) {
       setUserInfo(JSON.stringify(userInfo));
       saveToken(userInfo.token);
@@ -45,7 +43,6 @@ export default function GoogleAuth() {
   };
 
   const saveToken = (token: string) => SecureStore.setItemAsync("token", token);
-
   return (
     <>
       <Button

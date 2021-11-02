@@ -89,7 +89,7 @@ export const fetchOptionListDetails: (code: string) => Promise<{
   }
 };
 
-export const fetchGoogleLogin = async (authCode: string, os: string) => {
+export const fetchGoogleLogin = async (idToken: string, os: string) => {
   try {
     const res = await fetch(`${API_BASE_URL}/login/google`, {
       method: "POST",
@@ -97,13 +97,13 @@ export const fetchGoogleLogin = async (authCode: string, os: string) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        authCode,
+        idToken,
         os,
       }),
     });
-    const userInfo: { token: string; data: { name: string } } =
-      await res.json();
-    return userInfo;
+    const userInfo = await res.json();
+    if (!res.ok) throw new Error(userInfo.message);
+    return userInfo as { token: string; data: { name: string } };
   } catch (err) {
     Sentry.Native.captureException(err);
     console.log(err);
