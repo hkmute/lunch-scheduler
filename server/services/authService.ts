@@ -1,55 +1,25 @@
 import { Knex } from 'knex';
-import fetch from 'node-fetch';
 import { User } from './model';
-
-interface GoogleUserInfo {
-  id: string;
-  email: string;
-  verified_email: boolean;
-  name: string;
-  given_name: string;
-  family_name: string;
-  picture: string;
-  locale: string;
-}
+import { OAuth2Client } from 'google-auth-library';
 
 export function AuthService(knex: Knex) {
   return Object.freeze({
-    decodeGoogleToken: async (authCode: string, os: 'Android' | 'iOS' | 'expo') => {
-      const osConfig = {
-        iOS: {
-          client_id: process.env.IOS_GOOGLE_CLIENT_ID!,
-        },
-        Android: {
-          client_id: process.env.AN_GOOGLE_CLIENT_ID!,
-        },
-        expo: {
-          client_id: process.env.EXPO_GOOGLE_CLIENT_ID!,
-          client_secret: process.env.EXPO_GOOGLE_CLIENT_SECRET!,
-          redirect_uri: process.env.EXPO_REDIRECT_URI,
-        },
-      };
-      const res = await fetch('https://oauth2.googleapis.com/token', {
-        method: 'post',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          code: authCode,
-          grant_type: 'authorization_code',
-          ...osConfig[os],
-        }),
-      });
-      const resJson = await res.json();
-      const accessCode = resJson.access_token;
-      const fetchUserInfo = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
-        method: 'get',
-        headers: {
-          Authorization: `Bearer ${accessCode}`,
-        },
-      });
-      const userInfo = await fetchUserInfo.json();
-      return userInfo as GoogleUserInfo;
+    decodeGoogleToken: async (idToken: string, os: 'Android' | 'iOS' | 'expo') => {
+      try {
+        const client = new OAuth2Client();
+        const ticket = await client.verifyIdToken({
+          idToken,
+          audience: [
+            process.env.IOS_GOOGLE_CLIENT_ID!,
+            process.env.AN_GOOGLE_CLIENT_ID!,
+            process.env.EXPO_GOOGLE_CLIENT_ID!,
+          ],
+        });
+        const payload = ticket.getPayload();
+        return payload;
+      } catch {
+        return null;
+      }
     },
 
     getUserInfoById: async (id: string) => {
