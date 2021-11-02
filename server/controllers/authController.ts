@@ -25,11 +25,17 @@ export function AuthController(service: ReturnType<typeof AuthService>) {
 
     googleLogin: async (req: Request, res: Response) => {
       try {
-        const { authCode, codeVerifier, os } = req.body;
+        const { idToken, os } = req.body;
         if (os !== 'Android' && os !== 'iOS' && os !== 'expo') {
           return res.status(400).json({ message: 'Unrecognized OS' });
         }
-        const userGoogleInfo = await service.decodeGoogleToken(authCode, codeVerifier, os);
+        const userGoogleInfo = await service.decodeGoogleToken(idToken, os);
+        if (!userGoogleInfo) {
+          return res.status(400).json({ message: 'Invalid token' });
+        }
+        if (!userGoogleInfo.email || !userGoogleInfo.name) {
+          return res.status(400).json({ message: 'Invalid user information' });
+        }
         const userInfo = await service.getUserInfoByEmail(userGoogleInfo.email);
         if (!userInfo) {
           const userId = await service.createNewUser({ email: userGoogleInfo.email, name: userGoogleInfo.name });
