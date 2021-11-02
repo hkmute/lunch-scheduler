@@ -15,7 +15,7 @@ interface GoogleUserInfo {
 
 export function AuthService(knex: Knex) {
   return Object.freeze({
-    decodeGoogleToken: async (authCode: string, os: 'Android' | 'iOS' | 'expo') => {
+    decodeGoogleToken: async (authCode: string, codeVerifier: string, os: 'Android' | 'iOS' | 'expo') => {
       const osConfig = {
         iOS: {
           client_id: process.env.IOS_GOOGLE_CLIENT_ID!,
@@ -39,6 +39,7 @@ export function AuthService(knex: Knex) {
         body: JSON.stringify({
           code: authCode,
           grant_type: 'authorization_code',
+          code_verifier: codeVerifier,
           ...osConfig[os],
         }),
       });
