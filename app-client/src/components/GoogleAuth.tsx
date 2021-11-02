@@ -15,8 +15,7 @@ WebBrowser.maybeCompleteAuthSession();
 export default function GoogleAuth() {
   const userContext = useContext(User);
   const [userInfo, setUserInfo] = useState("");
-  const [request, response, promptAsync] = Google.useAuthRequest({
-    responseType: ResponseType.IdToken,
+  const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
     expoClientId: EXPO_CLIENT_ID,
     iosClientId: IOS_CLIENT_ID,
     androidClientId: ANDROID_CLIENT_ID,
