@@ -18,6 +18,7 @@ export default {
       fallbackToCacheTimeout: 0,
     },
     assetBundlePatterns: ["**/*"],
+    scheme: "com.hkmute.lunchscheduler",
     ios: {
       bundleIdentifier: "com.hkmute.lunchscheduler",
       supportsTablet: true,

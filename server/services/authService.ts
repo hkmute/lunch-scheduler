@@ -19,11 +19,9 @@ export function AuthService(knex: Knex) {
       const osConfig = {
         iOS: {
           client_id: process.env.IOS_GOOGLE_CLIENT_ID!,
-          redirect_uri: process.env.IOS_REDIRECT_URI,
         },
         Android: {
           client_id: process.env.AN_GOOGLE_CLIENT_ID!,
-          redirect_uri: process.env.AN_REDIRECT_URI,
         },
         expo: {
           client_id: process.env.EXPO_GOOGLE_CLIENT_ID!,
