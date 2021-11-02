@@ -38,7 +38,8 @@ export function Service(knex: Knex) {
         .select(
           knex.ref('id').withSchema('option_list'),
           knex.ref('name').withSchema('option_list'),
-          knex.raw("CONCAT('[',GROUP_CONCAT( JSON_OBJECT('optionId', ?, 'optionName', ?)),']') AS 'details'", [
+          knex.raw("CONCAT('[',GROUP_CONCAT( JSON_OBJECT('id', ?, 'optionId', ?, 'optionName', ?)),']') AS 'details'", [
+            knex.ref('id').withSchema('option_in_list'),
             knex.ref('id').withSchema('options'),
             knex.ref('name').withSchema('options'),
           ]) as any as Knex.Ref<'details', { details: 'details' }>

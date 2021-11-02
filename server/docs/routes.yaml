@@ -134,6 +134,8 @@
                       items:
                         type: object
                         properties:
+                          id:
+                            type: integer
                           optionId:
                             type: integer
                           optionName:
