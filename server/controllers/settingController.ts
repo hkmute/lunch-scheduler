@@ -59,11 +59,11 @@ export function SettingController(service: ReturnType<typeof SettingService>) {
 
     removeOptionListItem: async (req: Request, res: Response) => {
       try {
-        const { optionListId, optionId } = req.body;
-        if (typeof optionListId !== 'number' || typeof optionId !== 'number') {
+        const { id } = req.params;
+        if (!parseInt(id)) {
           return res.status(400).json({ message: 'Invalid request' });
         }
-        const deleted = await service.removeOptionListItem(optionListId, optionId);
+        const deleted = await service.removeOptionListItem(parseInt(id));
         if (deleted) {
           return res.json({ message: 'Removed successfully' });
         }

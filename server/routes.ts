@@ -31,7 +31,7 @@ routes.put('/option-list/:code', isLoggedIn, settingController.editCodeOptionLis
 routes.get('/option-list/:code/details', controller.getOptionListDetailsByCode);
 
 routes.post('/option-in-list', isLoggedIn, settingController.addOptionListItem); //TODO: check owner
-routes.delete('/option-in-list', isLoggedIn, settingController.removeOptionListItem); //TODO: check owner
+routes.delete('/option-in-list/:id', isLoggedIn, settingController.removeOptionListItem); //TODO: check owner
 
 routes.get('/today-options/:code', controller.getTodayOptionsByCode);
 

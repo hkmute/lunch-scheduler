@@ -55,10 +55,8 @@ export function SettingService(knex: Knex) {
       }
     },
 
-    removeOptionListItem: async (optionListId: number, optionId: number) => {
-      return await knex<OptionInList>('option_in_list')
-        .where({ option_list_id: optionListId, option_id: optionId })
-        .del();
+    removeOptionListItem: async (id: number) => {
+      return await knex<OptionInList>('option_in_list').where({ id }).del();
     },
   });
 }
