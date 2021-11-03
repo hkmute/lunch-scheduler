@@ -7,11 +7,11 @@ import {
   RefreshControl,
   ActivityIndicator,
 } from "react-native";
-import styles from "../styles/styles";
 import { format, parseISO } from "date-fns";
 import { RoomCode } from "../../AppContext";
 import { useFocusEffect, useTheme } from "@react-navigation/native";
 import { fetchHistory } from "../api/api";
+import makeStyles from "../styles/styles";
 interface HistoryItem {
   id: number;
   date: string;
@@ -20,6 +20,7 @@ interface HistoryItem {
 
 export default function HistoryScreen() {
   const theme = useTheme();
+  const styles = makeStyles(theme);
   const code = useContext(RoomCode);
   const [historyData, setHistoryData] = useState<HistoryItem[]>([]);
   const [refreshing, setRefreshing] = useState(false);

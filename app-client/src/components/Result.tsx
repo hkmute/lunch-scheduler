@@ -1,8 +1,10 @@
 import React from "react";
 import { View, Text } from "react-native";
-import styles from "../styles/styles";
+import makeStyles from "../styles/styles";
 
 export default function Result(props: { result: string }) {
+  const styles = makeStyles();
+
   return (
     <View
       style={{

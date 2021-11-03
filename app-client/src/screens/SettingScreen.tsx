@@ -10,28 +10,29 @@ import {
   SafeAreaView,
   Text,
   View,
-  StyleSheet,
   Modal,
   TextInput,
   Button,
   Pressable,
 } from "react-native";
 import { RoomCode } from "../../AppContext";
-import styles from "../styles/styles";
 import { useFocusEffect, useNavigation } from "@react-navigation/core";
-import { Swipeable, TouchableHighlight } from "react-native-gesture-handler";
+import { TouchableHighlight } from "react-native-gesture-handler";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useTheme } from "@react-navigation/native";
 import ItemSeparator from "../components/ItemSeparator";
 import * as Clipboard from "expo-clipboard";
 import Toast from "react-native-root-toast";
 import { Ionicons } from "@expo/vector-icons";
-import { fetchOptionListDetails } from "../api/api";
+import { deleteOption, fetchOptionListDetails } from "../api/api";
+import makeStyles from "../styles/styles";
+import SwipeableListItem from "../components/SwipeableListItem";
 
 export interface OptionListDetails {
   id: number;
   name: string;
   details: {
+    id: number;
     optionId: number;
     optionName: string;
   }[];
@@ -39,6 +40,7 @@ export interface OptionListDetails {
 
 export default function SettingScreen() {
   const theme = useTheme();
+  const styles = makeStyles(theme);
   const code = useContext(RoomCode);
   const navigation = useNavigation();
   const [settingData, setSettingData] = useState<OptionListDetails | null>(
@@ -91,41 +93,45 @@ export default function SettingScreen() {
     Toast.show("Copied to clipboard");
   };
 
-  const style = StyleSheet.create({
-    titleContainer: { padding: 8, backgroundColor: "#DDD" },
-    contentContainer: { padding: 16, backgroundColor: theme.colors.background },
-    text: { fontSize: 20, textAlign: "center" },
-  });
+  const handleDelete = (id: number) => async () => {
+    await deleteOption(id);
+    const newList = await fetchOptionListDetails(code);
+    setSettingData(newList.data);
+  };
 
   return (
     <SafeAreaView style={[styles.container]}>
       <FlatList
         ListHeaderComponent={
           <>
-            <View style={style.titleContainer}>
-              <Text style={style.text}>房號</Text>
+            <View style={styles.titleContainer}>
+              <Text style={styles.text}>房號</Text>
             </View>
             <TouchableHighlight underlayColor="#AAA" onPress={copyToClipboard}>
-              <View style={style.contentContainer}>
-                <Text style={style.text}>{code}</Text>
+              <View style={styles.contentContainer}>
+                <Text style={styles.text}>{code}</Text>
               </View>
             </TouchableHighlight>
-            <View style={style.titleContainer}>
-              <Text style={style.text}>名單</Text>
+            <View style={styles.titleContainer}>
+              <Text style={styles.text}>名單</Text>
             </View>
-            <View style={style.contentContainer}>
-              <Text style={style.text}>{settingData?.name}</Text>
+            <View style={styles.contentContainer}>
+              <Text style={styles.text}>{settingData?.name}</Text>
             </View>
-            <View style={style.titleContainer}>
-              <Text style={style.text}>名單內容</Text>
+            <View style={styles.titleContainer}>
+              <Text style={styles.text}>名單內容</Text>
             </View>
           </>
         }
         data={settingData?.details}
         renderItem={(data) => (
-          <Swipeable
-            renderRightActions={() => (
-              <TouchableHighlight underlayColor="#DDD" onPress={() => {}}>
+          <SwipeableListItem
+            content={data.item.optionName}
+            rightAction={
+              <TouchableHighlight
+                underlayColor="#DDD"
+                onPress={handleDelete(data.item.id)}
+              >
                 <View
                   style={{
                     alignItems: "flex-end",
@@ -138,16 +144,10 @@ export default function SettingScreen() {
                   <MaterialIcons name="delete" size={24} color="black" />
                 </View>
               </TouchableHighlight>
-            )}
-          >
-            <View style={style.contentContainer}>
-              <Text style={{ fontSize: 16, textAlign: "center" }}>
-                {data.item.optionName}
-              </Text>
-            </View>
-          </Swipeable>
+            }
+          />
         )}
-        keyExtractor={(item) => item.optionId.toString()}
+        keyExtractor={(item) => item.id.toString()}
         ItemSeparatorComponent={ItemSeparator}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />

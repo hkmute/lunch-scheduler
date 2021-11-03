@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Button, Text } from "react-native";
-import styles from "../styles/styles";
 import { Option, Vote } from "../screens/TodayScreen";
+import makeStyles from "../styles/styles";
 
 export default function Choice(props: {
   code: string;
@@ -9,6 +9,8 @@ export default function Choice(props: {
   vote: Vote[];
   handlePress: (id: number) => () => Promise<void>;
 }) {
+  const styles = makeStyles();
+
   return (
     <View style={{ ...styles.container, justifyContent: "center", margin: 16 }}>
       {props.vote.length ? (

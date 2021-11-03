@@ -10,7 +10,7 @@ import {
 } from "../api/api";
 import Choice from "../components/Choice";
 import Result from "../components/Result";
-import styles from "../styles/styles";
+import makeStyles from "../styles/styles";
 
 export interface Option {
   id: number;
@@ -27,6 +27,7 @@ export interface Vote {
 }
 
 export default function TodayScreen() {
+  const styles = makeStyles();
   const [result, setResult] = useState("");
   const [options, setOptions] = useState<Option[]>([]);
   const [vote, setVote] = useState<Vote[]>([]);

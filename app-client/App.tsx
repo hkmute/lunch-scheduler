@@ -9,14 +9,14 @@ import "react-native-get-random-values";
 import { nanoid } from "nanoid";
 import { Guest, User } from "./AppContext";
 import { ActivityIndicator, Text, View } from "react-native";
-import { APP_VERSION } from "@env";
 import { initSentry } from "./src/utils/sentry";
 import * as Sentry from "sentry-expo";
 import { MyTheme } from "./theme";
 import { initNotifications } from "./src/notifications/notifications";
 import * as SecureStore from "expo-secure-store";
 import { RootSiblingParent } from "react-native-root-siblings";
-import { fetchUserData } from "./src/api/api";
+import { fetchUserData } from "./src/api/auth";
+import Constants from "expo-constants";
 
 export default function App() {
   const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -82,7 +82,6 @@ export default function App() {
       setUser(userInfo.data.name);
     }
   };
-
   return (
     <RootSiblingParent>
       <Guest.Provider value={guest}>
@@ -118,7 +117,7 @@ export default function App() {
               style={{ flexDirection: "row", justifyContent: "space-between" }}
             >
               <Text>Guest: {guest}</Text>
-              <Text>{APP_VERSION}</Text>
+              <Text>{Constants.manifest?.revisionId}</Text>
             </View>
             <Text>Token: {token}</Text>
           </View>
