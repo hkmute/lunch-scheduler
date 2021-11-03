@@ -1,6 +1,7 @@
 import { API_BASE_URL } from "@env";
 import * as Sentry from "sentry-expo";
 import { OptionListDetails } from "../screens/SettingScreen";
+import Toast from "react-native-root-toast";
 import * as SecureStore from "expo-secure-store";
 
 export const fetchTodayResult = async (code: string) => {
@@ -11,7 +12,9 @@ export const fetchTodayResult = async (code: string) => {
     }
     throw new Error((await res.json()).message);
   } catch (err) {
-    console.log(err);
+    if (err instanceof Error) {
+      Toast.show(err.message);
+    }
     Sentry.Native.captureException(err);
   }
 };
@@ -24,7 +27,9 @@ export const fetchTodayOptions = async (code: string) => {
     }
     throw new Error((await res.json()).message);
   } catch (err) {
-    console.log(err);
+    if (err instanceof Error) {
+      Toast.show(err.message);
+    }
     Sentry.Native.captureException(err);
   }
 };
@@ -37,7 +42,9 @@ export const fetchTodayVote = async (code: string, user: string) => {
     }
     throw new Error((await res.json()).message);
   } catch (err) {
-    console.log(err);
+    if (err instanceof Error) {
+      Toast.show(err.message);
+    }
     Sentry.Native.captureException(err);
   }
 };
@@ -59,7 +66,9 @@ export const postTodayVote = async (id: number, code: string, user: string) => {
     }
     throw new Error((await res.json()).message);
   } catch (err) {
-    console.log(err);
+    if (err instanceof Error) {
+      Toast.show(err.message);
+    }
     Sentry.Native.captureException(err);
   }
 };
@@ -72,7 +81,9 @@ export const fetchHistory = async (code: string) => {
     }
     throw new Error((await res.json()).message);
   } catch (err) {
-    console.log(err);
+    if (err instanceof Error) {
+      Toast.show(err.message);
+    }
     Sentry.Native.captureException(err);
   }
 };
@@ -84,46 +95,30 @@ export const fetchOptionListDetails: (code: string) => Promise<{
     const res = await fetch(`${API_BASE_URL}/option-list/${code}/details`);
     return await res.json();
   } catch (err) {
-    console.log(err);
+    if (err instanceof Error) {
+      Toast.show(err.message);
+    }
     Sentry.Native.captureException(err);
   }
 };
 
-export const fetchGoogleLogin = async (idToken: string, os: string) => {
+export const deleteOption = async (id: number) => {
   try {
-    const res = await fetch(`${API_BASE_URL}/login/google`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        idToken,
-        os,
-      }),
-    });
-    const userInfo = await res.json();
-    if (!res.ok) throw new Error(userInfo.message);
-    return userInfo as { token: string; data: { name: string } };
-  } catch (err) {
-    Sentry.Native.captureException(err);
-    console.log(err);
-  }
-};
-
-export const fetchUserData = async (token: string) => {
-  try {
-    const res = await fetch(`${API_BASE_URL}/user/me`, {
+    const token = await SecureStore.getItemAsync("token");
+    const res = await fetch(`${API_BASE_URL}/option-in-list/${id}`, {
+      method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-    if (res.status === 401) {
-      return await SecureStore.deleteItemAsync("token");
+    if (!res.ok) {
+      throw new Error((await res.json()).message);
     }
-    const userInfo = await res.json();
-    return userInfo;
+    return true;
   } catch (err) {
-    console.log(err);
+    if (err instanceof Error) {
+      Toast.show(err.message);
+    }
     Sentry.Native.captureException(err);
   }
 };
