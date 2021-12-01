@@ -21,12 +21,26 @@ export function SettingController(service: ReturnType<typeof SettingService>) {
       }
     },
 
+    createNewList: async (req: Request, res: Response) => {
+      try {
+        const ownerId = 1;
+        const { name, optionListIds } = req.body;
+        if (!ownerId || typeof name !== 'string' || !Array.isArray(optionListIds)) {
+          return res.status(400).json({ message: 'Invalid request' });
+        }
+        return res.json(await service.createNewList(name, optionListIds));
+      } catch (error) {
+        console.error(error.message);
+        return res.status(500).json({ message: 'internal server error' });
+      }
+    },
+
     editCodeOptionList: async (req: Request, res: Response) => {
       try {
         const ownerId = req.user!;
         const code = req.params.code;
-        const { optionListId } = req.body;
-        const updated = await service.editCodeOptionList(ownerId, code, optionListId);
+        const { optionIds } = req.body;
+        const updated = await service.editCodeOptionList(ownerId, code, optionIds);
         if (updated) {
           return res.json({ message: 'Success' });
         } else if (updated === 0) {

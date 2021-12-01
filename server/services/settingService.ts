@@ -1,5 +1,5 @@
 import { Knex } from 'knex';
-import { Code, OptionInList, Options } from './model';
+import { Code, OptionInList, OptionList, Options } from './model';
 import { nanoid } from 'nanoid/non-secure';
 import { logger } from '../utils/logger';
 import { CommonService } from './commonService';
@@ -58,5 +58,15 @@ export function SettingService(knex: Knex) {
     removeOptionListItem: async (id: number) => {
       return await knex<OptionInList>('option_in_list').where({ id }).del();
     },
+
+    // createNewList: async (name: string, optionIds: number[]) => {
+    //   return await knex.transaction(async (trx) => {
+    //     const newListId = await trx<OptionList>('option_list').insert({ name });
+    //     const insertedOptions = await trx
+    //       .insert(optionIds.map((optionId) => ({ option_id: optionId })))
+    //       .into<OptionInList>('option_list')
+    //       .where('option_list_id', newListId);
+    //   });
+    // },
   });
 }
