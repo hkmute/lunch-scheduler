@@ -19,7 +19,7 @@ const settingController = SettingController(settingService);
 
 export const routes = express.Router();
 
-routes.post('/code', settingController.createNewCode);
+routes.post('/code', isLoggedIn, settingController.createNewCode);
 
 routes.get('/options', controller.getOptions);
 
@@ -29,7 +29,7 @@ routes.get('/history/:code/today', controller.getTodayResultByCode);
 routes.get('/option-list/:code', controller.getOptionListByCode);
 routes.put('/option-list/:code', isLoggedIn, settingController.editCodeOptionList);
 routes.get('/option-list/:code/details', controller.getOptionListDetailsByCode);
-routes.post('/option-list', settingController.createNewList);
+routes.post('/option-list', isLoggedIn, settingController.createNewList);
 
 routes.post('/option-in-list', isLoggedIn, settingController.addOptionListItem); //TODO: check owner
 routes.delete('/option-in-list/:id', isLoggedIn, settingController.removeOptionListItem); //TODO: check owner

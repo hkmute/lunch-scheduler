@@ -5,7 +5,7 @@ export function SettingController(service: ReturnType<typeof SettingService>) {
   return Object.freeze({
     createNewCode: async function (req: Request, res: Response) {
       try {
-        const ownerId = 4;
+        const ownerId = req.user;
         const { optionListId, name, optionIds } = req.body;
         if (!ownerId) {
           return res.status(400).json({ message: 'Invalid request' });
@@ -27,7 +27,7 @@ export function SettingController(service: ReturnType<typeof SettingService>) {
 
     createNewList: async (req: Request, res: Response) => {
       try {
-        const ownerId = 4;
+        const ownerId = req.user;
         const { name, optionIds } = req.body;
         if (!ownerId || typeof name !== 'string' || !Array.isArray(optionIds)) {
           return res.status(400).json({ message: 'Invalid request' });
