@@ -5,14 +5,14 @@ export function SettingController(service: ReturnType<typeof SettingService>) {
   return Object.freeze({
     createNewCode: async function (req: Request, res: Response) {
       try {
-        const ownerId = req.user;
+        const ownerId = 4;
         const { optionListId, name, optionIds } = req.body;
         if (!ownerId) {
           return res.status(400).json({ message: 'Invalid request' });
         }
         let newListId;
         if (!optionListId) {
-          newListId = await service.createNewList(name, optionIds);
+          newListId = await service.createNewList(name, optionIds, ownerId);
         }
         const code = await service.createNewCode(ownerId, optionListId || newListId);
         if (code) {
@@ -27,12 +27,12 @@ export function SettingController(service: ReturnType<typeof SettingService>) {
 
     createNewList: async (req: Request, res: Response) => {
       try {
-        const ownerId = req.user;
+        const ownerId = 4;
         const { name, optionIds } = req.body;
         if (!ownerId || typeof name !== 'string' || !Array.isArray(optionIds)) {
           return res.status(400).json({ message: 'Invalid request' });
         }
-        return res.json(await service.createNewList(name, optionIds));
+        return res.json(await service.createNewList(name, optionIds, ownerId));
       } catch (error) {
         console.error(error.message);
         return res.status(500).json({ message: 'internal server error' });

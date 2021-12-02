@@ -13,6 +13,7 @@ export interface History {
 export interface OptionList {
   id: number;
   name: string;
+  owner_id: number;
 }
 
 export interface Code {

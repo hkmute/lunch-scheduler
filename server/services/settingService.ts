@@ -19,12 +19,14 @@ export function SettingService(knex: Knex) {
       return;
     },
 
-    createNewList: async (name: string, optionIds: number[]) => {
+    createNewList: async (name: string, optionIds: number[], ownerId: number) => {
       return await knex.transaction(async (trx) => {
-        const newListId = await trx<OptionList>('option_list').insert({ name });
-        await trx
-          .insert(optionIds.map((optionId) => ({ option_id: optionId, option_list_id: newListId })))
-          .into<OptionInList>('option_in_list');
+        const newListId = await trx<OptionList>('option_list').insert({ name, owner_id: ownerId });
+        if (optionIds.length) {
+          await trx
+            .insert(optionIds.map((optionId) => ({ option_id: optionId, option_list_id: newListId })))
+            .into<OptionInList>('option_in_list');
+        }
         return newListId[0];
       });
     },
