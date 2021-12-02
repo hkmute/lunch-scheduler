@@ -19,6 +19,16 @@ export function SettingService(knex: Knex) {
       return;
     },
 
+    createNewList: async (name: string, optionIds: number[]) => {
+      return await knex.transaction(async (trx) => {
+        const newListId = await trx<OptionList>('option_list').insert({ name });
+        await trx
+          .insert(optionIds.map((optionId) => ({ option_id: optionId, option_list_id: newListId })))
+          .into<OptionInList>('option_in_list');
+        return newListId[0];
+      });
+    },
+
     editCodeOptionList: async (ownerId: number, code: string, optionListId: number) => {
       try {
         return await knex<Code>('code').update('option_list_id', optionListId).where({ code, owner_id: ownerId });
@@ -58,15 +68,5 @@ export function SettingService(knex: Knex) {
     removeOptionListItem: async (id: number) => {
       return await knex<OptionInList>('option_in_list').where({ id }).del();
     },
-
-    // createNewList: async (name: string, optionIds: number[]) => {
-    //   return await knex.transaction(async (trx) => {
-    //     const newListId = await trx<OptionList>('option_list').insert({ name });
-    //     const insertedOptions = await trx
-    //       .insert(optionIds.map((optionId) => ({ option_id: optionId })))
-    //       .into<OptionInList>('option_list')
-    //       .where('option_list_id', newListId);
-    //   });
-    // },
   });
 }

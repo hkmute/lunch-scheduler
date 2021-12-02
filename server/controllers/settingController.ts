@@ -3,14 +3,18 @@ import { SettingService } from '../services/settingService';
 
 export function SettingController(service: ReturnType<typeof SettingService>) {
   return Object.freeze({
-    createNewCode: async (req: Request, res: Response) => {
+    createNewCode: async function (req: Request, res: Response) {
       try {
-        const ownerId = req.user;
-        const { optionListId } = req.body;
-        if (!ownerId || !optionListId) {
+        const ownerId = 4;
+        const { optionListId, name, optionIds } = req.body;
+        if (!ownerId) {
           return res.status(400).json({ message: 'Invalid request' });
         }
-        const code = await service.createNewCode(ownerId, optionListId);
+        let newListId;
+        if (!optionListId) {
+          newListId = await service.createNewList(name, optionIds);
+        }
+        const code = await service.createNewCode(ownerId, optionListId || newListId);
         if (code) {
           return res.json({ data: { code } });
         }
@@ -23,12 +27,12 @@ export function SettingController(service: ReturnType<typeof SettingService>) {
 
     createNewList: async (req: Request, res: Response) => {
       try {
-        const ownerId = 1;
-        const { name, optionListIds } = req.body;
-        if (!ownerId || typeof name !== 'string' || !Array.isArray(optionListIds)) {
+        const ownerId = 4;
+        const { name, optionIds } = req.body;
+        if (!ownerId || typeof name !== 'string' || !Array.isArray(optionIds)) {
           return res.status(400).json({ message: 'Invalid request' });
         }
-        return res.json(await service.createNewList(name, optionListIds));
+        return res.json(await service.createNewList(name, optionIds));
       } catch (error) {
         console.error(error.message);
         return res.status(500).json({ message: 'internal server error' });

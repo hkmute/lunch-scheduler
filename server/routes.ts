@@ -19,7 +19,7 @@ const settingController = SettingController(settingService);
 
 export const routes = express.Router();
 
-routes.post('/code', isLoggedIn, settingController.createNewCode);
+routes.post('/code', settingController.createNewCode);
 
 routes.get('/options', controller.getOptions);
 
