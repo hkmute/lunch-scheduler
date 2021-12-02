@@ -41,14 +41,16 @@ export function SettingController(service: ReturnType<typeof SettingService>) {
 
     editCodeOptionList: async (req: Request, res: Response) => {
       try {
-        const ownerId = req.user!;
+        const ownerId = req.user;
         const code = req.params.code;
-        const { optionIds } = req.body;
-        const updated = await service.editCodeOptionList(ownerId, code, optionIds);
+        const { optionListId } = req.body;
+        const isOwner = await service.isCodeOwner(ownerId!, code);
+        if (!isOwner) {
+          return res.status(403).json({ message: 'Permission denied' });
+        }
+        const updated = await service.editCodeOptionList(ownerId!, code, optionListId);
         if (updated) {
           return res.json({ message: 'Success' });
-        } else if (updated === 0) {
-          return res.status(403).json({ message: 'Permission denied' });
         } else {
           return res.status(400).json({ message: 'Invalid request' });
         }
@@ -60,7 +62,12 @@ export function SettingController(service: ReturnType<typeof SettingService>) {
 
     addOptionListItem: async (req: Request, res: Response) => {
       try {
+        const ownerId = req.user;
         const { optionListId, newOption } = req.body;
+        const isOwner = await service.isListOwner(ownerId!, optionListId);
+        if (!isOwner) {
+          return res.status(403).json({ message: 'Permission denied' });
+        }
         if (typeof optionListId !== 'number' || !newOption) {
           return res.status(400).json({ message: 'Invalid request' });
         }
@@ -77,11 +84,16 @@ export function SettingController(service: ReturnType<typeof SettingService>) {
 
     removeOptionListItem: async (req: Request, res: Response) => {
       try {
-        const { id } = req.params;
-        if (!parseInt(id)) {
+        const ownerId = req.user;
+        const { optionListId, optionInListId } = req.body;
+        if (!parseInt(optionListId) || !parseInt(optionInListId)) {
           return res.status(400).json({ message: 'Invalid request' });
         }
-        const deleted = await service.removeOptionListItem(parseInt(id));
+        const isOwner = await service.isListOwner(ownerId!, parseInt(optionListId));
+        if (!isOwner) {
+          return res.status(403).json({ message: 'Permission denied' });
+        }
+        const deleted = await service.removeOptionListItem(parseInt(optionInListId), parseInt(optionListId));
         if (deleted) {
           return res.json({ message: 'Removed successfully' });
         }

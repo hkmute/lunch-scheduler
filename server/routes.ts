@@ -28,11 +28,11 @@ routes.get('/history/:code/today', controller.getTodayResultByCode);
 
 routes.post('/option-list', isLoggedIn, settingController.createNewList);
 routes.get('/option-list/:code', controller.getOptionListByCode);
-routes.put('/option-list/:code', isLoggedIn, settingController.editCodeOptionList);
+routes.put('/option-list/:code', settingController.editCodeOptionList);
 routes.get('/option-list/:code/details', controller.getOptionListDetailsByCode);
 
-routes.post('/option-in-list', isLoggedIn, settingController.addOptionListItem); //TODO: check owner
-routes.delete('/option-in-list/:id', isLoggedIn, settingController.removeOptionListItem); //TODO: check owner
+routes.post('/option-in-list', isLoggedIn, settingController.addOptionListItem);
+routes.delete('/option-in-list', isLoggedIn, settingController.removeOptionListItem);
 
 routes.get('/today-options/:code', controller.getTodayOptionsByCode);
 

@@ -31,6 +31,18 @@ export function SettingService(knex: Knex) {
       });
     },
 
+    isCodeOwner: async (userId: number, code: string) => {
+      const where = { owner_Id: userId, code };
+      const result = await knex<Code>('code').count('*', { as: 'count' }).where(where);
+      return result[0].count;
+    },
+
+    isListOwner: async (userId: number, optionListId: number) => {
+      const where = { owner_Id: userId, id: optionListId };
+      const result = await knex<OptionList>('option_list').count('*', { as: 'count' }).where(where);
+      return result[0].count;
+    },
+
     editCodeOptionList: async (ownerId: number, code: string, optionListId: number) => {
       try {
         return await knex<Code>('code').update('option_list_id', optionListId).where({ code, owner_id: ownerId });
@@ -67,8 +79,9 @@ export function SettingService(knex: Knex) {
       }
     },
 
-    removeOptionListItem: async (id: number) => {
-      return await knex<OptionInList>('option_in_list').where({ id }).del();
+    removeOptionListItem: async (id: number, optionListId: number) => {
+      const where = { id, option_list_id: optionListId };
+      return await knex<OptionInList>('option_in_list').where(where).del();
     },
   });
 }
