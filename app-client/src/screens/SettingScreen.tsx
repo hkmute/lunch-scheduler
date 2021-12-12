@@ -107,8 +107,8 @@ export default function SettingScreen() {
     const newList = await fetchOptionListDetails(code);
     setSettingData(newList.data);
     setModalVisible(false);
+    setModalValue("");
   };
-
   return (
     <SafeAreaView style={[styles.container]}>
       <FlatList
@@ -165,6 +165,10 @@ export default function SettingScreen() {
         ListFooterComponent={ItemSeparator}
       />
       <Modal animationType="fade" transparent={true} visible={modalVisible}>
+        <Pressable
+          onPress={() => setModalVisible(false)}
+          style={{ position: "absolute", height: "100%", width: "100%" }}
+        />
         <View
           style={{ alignItems: "center", justifyContent: "center", flex: 1 }}
         >

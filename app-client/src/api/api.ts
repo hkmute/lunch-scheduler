@@ -131,7 +131,7 @@ export const deleteOption = async (
   }
 };
 
-export const addOption = async (optionsListId: number, optionName: string) => {
+export const addOption = async (optionListId: number, optionName: string) => {
   try {
     const token = await SecureStore.getItemAsync("token");
     const res = await fetch(`${API_BASE_URL}/option-in-list`, {
@@ -141,7 +141,7 @@ export const addOption = async (optionsListId: number, optionName: string) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        optionsListId,
+        optionListId,
         newOption: optionName,
       }),
     });

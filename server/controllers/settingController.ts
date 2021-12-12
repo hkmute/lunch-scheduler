@@ -64,7 +64,6 @@ export function SettingController(service: ReturnType<typeof SettingService>) {
       try {
         const ownerId = req.user;
         const { optionListId, newOption } = req.body;
-        console.log(ownerId, optionListId, newOption);
         const isOwner = await service.isListOwner(ownerId!, optionListId);
         if (!isOwner) {
           return res.status(403).json({ message: 'Permission denied' });
