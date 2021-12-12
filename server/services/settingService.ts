@@ -32,13 +32,13 @@ export function SettingService(knex: Knex) {
     },
 
     isCodeOwner: async (userId: number, code: string) => {
-      const where = { owner_Id: userId, code };
+      const where = { owner_id: userId, code };
       const result = await knex<Code>('code').count('*', { as: 'count' }).where(where);
       return result[0].count;
     },
 
     isListOwner: async (userId: number, optionListId: number) => {
-      const where = { owner_Id: userId, id: optionListId };
+      const where = { owner_id: userId, id: optionListId };
       const result = await knex<OptionList>('option_list').count('*', { as: 'count' }).where(where);
       return result[0].count;
     },
