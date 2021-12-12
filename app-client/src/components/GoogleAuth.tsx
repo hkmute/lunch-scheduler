@@ -51,7 +51,6 @@ export default function GoogleAuth() {
         }}
       />
       <Text>{userInfo}</Text>
-      <Text>{JSON.stringify(response)}</Text>
     </>
   );
 }

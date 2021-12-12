@@ -102,14 +102,48 @@ export const fetchOptionListDetails: (code: string) => Promise<{
   }
 };
 
-export const deleteOption = async (id: number) => {
+export const deleteOption = async (
+  optionListId: number,
+  optionInListId: number
+) => {
   try {
     const token = await SecureStore.getItemAsync("token");
-    const res = await fetch(`${API_BASE_URL}/option-in-list/${id}`, {
+    const res = await fetch(`${API_BASE_URL}/option-in-list`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
       },
+      body: JSON.stringify({
+        optionListId,
+        optionInListId,
+      }),
+    });
+    if (!res.ok) {
+      throw new Error((await res.json()).message);
+    }
+    return true;
+  } catch (err) {
+    if (err instanceof Error) {
+      Toast.show(err.message);
+    }
+    Sentry.Native.captureException(err);
+  }
+};
+
+export const addOption = async (optionsListId: number, optionName: string) => {
+  try {
+    const token = await SecureStore.getItemAsync("token");
+    const res = await fetch(`${API_BASE_URL}/option-in-list`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        optionsListId,
+        newOption: optionName,
+      }),
     });
     if (!res.ok) {
       throw new Error((await res.json()).message);

@@ -24,7 +24,7 @@ import ItemSeparator from "../components/ItemSeparator";
 import * as Clipboard from "expo-clipboard";
 import Toast from "react-native-root-toast";
 import { Ionicons } from "@expo/vector-icons";
-import { deleteOption, fetchOptionListDetails } from "../api/api";
+import { addOption, deleteOption, fetchOptionListDetails } from "../api/api";
 import makeStyles from "../styles/styles";
 import SwipeableListItem from "../components/SwipeableListItem";
 
@@ -94,9 +94,19 @@ export default function SettingScreen() {
   };
 
   const handleDelete = (id: number) => async () => {
-    await deleteOption(id);
+    await deleteOption(settingData!.id, id);
     const newList = await fetchOptionListDetails(code);
     setSettingData(newList.data);
+  };
+
+  const handleAdd = async () => {
+    if (!settingData?.id || !modalValue) {
+      return Toast.show("請輸入餐廳");
+    }
+    await addOption(settingData.id, modalValue);
+    const newList = await fetchOptionListDetails(code);
+    setSettingData(newList.data);
+    setModalVisible(false);
   };
 
   return (
@@ -181,12 +191,7 @@ export default function SettingScreen() {
                 marginVertical: 8,
               }}
             />
-            <Button
-              title="加入"
-              onPress={() => {
-                setModalVisible(false);
-              }}
-            />
+            <Button title="加入" onPress={handleAdd} />
           </View>
         </View>
       </Modal>
