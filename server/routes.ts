@@ -28,7 +28,7 @@ routes.get('/history/:code/today', controller.getTodayResultByCode);
 
 routes.post('/option-list', isLoggedIn, settingController.createNewList);
 routes.get('/option-list/:code', controller.getOptionListByCode);
-routes.put('/option-list/:code', settingController.editCodeOptionList);
+routes.put('/option-list/:code', isLoggedIn, settingController.editCodeOptionList);
 routes.get('/option-list/:code/details', controller.getOptionListDetailsByCode);
 
 routes.post('/option-in-list', isLoggedIn, settingController.addOptionListItem);
